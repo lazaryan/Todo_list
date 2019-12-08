@@ -1,0 +1,18 @@
+<!-- devserver app base settings -->
+meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+
+link(href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet")
+
+style !{ htmlWebpackPlugin.options.resetCss }
+
+style.
+    textarea, body {
+        font-family: 'Lato', sans-serif;
+    }
+
+#app
+
+<!-- if it isnt devserver - put the bundle's code here -->
+if !htmlWebpackPlugin.options.hot
+    script.
+        !{ compilation.assets[htmlWebpackPlugin.options.app].source() }
