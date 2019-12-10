@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { Flex } from 'reflexbox'
+import theme from 'theme'
+
+const context = {}
 
 const Component = props => {
+	context.styles = props.styles
+	
 	const [value, setValue] = useState(props.value)
 	const [metaType] = useState({
 		'persentage': 'number'
@@ -24,11 +30,14 @@ const Component = props => {
 	})[type][metaType])
 
 	return (
-		<Flex sx={props.sx}>
-			<input type={metaType} value={value} onChange={onChange} />
-		</Flex>
+		<Container sx={props.sx}>
+			<Input type={metaType} value={value} onChange={onChange} />
+		</Container>
 	)
 }
+
+const Container = styled(Flex)`${() => context.styles.container}`
+const Input = styled.input`${() => context.styles.input}`
 
 Component.propTypes = {
 	desabled: PropTypes.bool,
@@ -37,7 +46,8 @@ Component.propTypes = {
 
 Component.defaultProps = {
 	value: '',
-	type: 'text'
+	type: 'text',
+	styles: theme.input.styles.default
 }
 
 export default Component

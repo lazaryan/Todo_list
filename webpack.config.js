@@ -87,7 +87,8 @@ module.exports = {
 	resolve: {
 		extensions: ['*', '.js', '.jsx'],
 		alias: {
-			ui: path.resolve(`${appsPath}/ui/index.js`)
+			ui: path.resolve(`${appsPath}/ui/index.js`),
+			theme: path.resolve(`${appsPath}/ui/themes/main/index.js`)
 		}
 	},
 	devServer: {
