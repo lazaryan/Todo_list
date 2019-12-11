@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import { isEmpty as _isEmpty } from 'lodash'
+import styled, { ThemeContext } from 'styled-components'
 import { Flex } from 'reflexbox'
-import theme from 'theme'
+import { input as mainThemeInput } from 'theme'
 
 const context = {}
 
 const Component = props => {
-	context.styles = props.styles
+	const themeContext = useContext(ThemeContext)
+
+	context.styles = props.styles || (!_isEmpty(themeContext) && themeContext.input || mainThemeInput).styles.default
 	
 	const [value, setValue] = useState(props.value)
 	const [metaType] = useState({
@@ -46,8 +49,7 @@ Component.propTypes = {
 
 Component.defaultProps = {
 	value: '',
-	type: 'text',
-	styles: theme.input.styles.default
+	type: 'text'
 }
 
 export default Component

@@ -3,8 +3,7 @@ import { isEmpty as _isEmpty } from 'lodash'
 import axios from 'axios'
 
 import { ThemeProvider } from 'styled-components'
-import { Input } from 'ui'
-import theme from 'theme'
+import { Input, themes } from 'ui'
 import { Flex } from 'reflexbox'
 
 import Header from './components/header'
@@ -26,4 +25,4 @@ const App = props => {
 	)
 }
 
-export default () => <ThemeProvider theme={theme}><App /></ThemeProvider>
+export default () => <ThemeProvider theme={themes['main']}><App /></ThemeProvider>
