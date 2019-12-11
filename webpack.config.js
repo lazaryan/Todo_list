@@ -6,6 +6,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const appsPath = path.resolve('./app')
 const viewsPath = path.resolve(`${appsPath}/views`)
@@ -67,11 +68,21 @@ const plugins = [
 		.map(app => new HtmlWebpackPlugin(HtmlWebpackPluginOptionsFactor(app)))
 ]
 
+const optimization = mode !== 'production' ? {} : {
+	minimizer: [
+		new TerserPlugin({
+			cache: true,
+			parallel: true
+		})
+	]
+}
+
 module.exports = {
 	mode,
 	entry,
 	output,
 	plugins,
+	optimization,
 	externals: hot ? {} : {
 		'React': 'React'
 	},
