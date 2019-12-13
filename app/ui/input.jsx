@@ -7,7 +7,7 @@ import { input as mainThemeInput } from 'theme'
 
 const context = {}
 
-const Component = props => {
+export const Component = props => {
 	const themeContext = useContext(ThemeContext)
 
 	context.styles = props.styles || (!_isEmpty(themeContext) && themeContext.input || mainThemeInput).styles.default

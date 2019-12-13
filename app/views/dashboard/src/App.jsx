@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { isEmpty as _isEmpty } from 'lodash'
 import axios from 'axios'
 
@@ -9,20 +10,27 @@ import { Flex } from 'reflexbox'
 import Header from './components/header'
 
 const App = props => {
+	const dispatch = useDispatch()
+
+	const appStore = useSelector(state => state.app)
+
 	const [initialised, setInitialised] = useState(false)
 
 	useEffect(() => {
+		console.log(appStore)
 		setInitialised(true)
 	}, [])
 
 	return (
-		initialised && <Flex width="100%" flexDirection="column">
-			<Header />
-			<Flex>
-				<Input />
+		initialised && <ThemeProvider theme={themes['dark']}>
+			<Flex width="100%" flexDirection="column">
+				<Header />
+				<Flex>
+					<Input />
+				</Flex>
 			</Flex>
-		</Flex>
+		</ThemeProvider>
 	)
 }
 
-export default () => <ThemeProvider theme={themes['main']}><App /></ThemeProvider>
+export default App
