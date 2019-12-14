@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const bodyParser = require('body-parser')
 
 const appsPath = path.resolve('./app')
 const viewsPath = path.resolve(`${appsPath}/views`)
@@ -99,7 +100,8 @@ module.exports = {
 		extensions: ['*', '.js', '.jsx'],
 		alias: {
 			ui: path.resolve(`${appsPath}/ui/index.js`),
-			theme: path.resolve(`${appsPath}/ui/themes/main/index.js`)
+			theme: path.resolve(`${appsPath}/ui/themes/main/index.js`),
+			utils: path.resolve(`${appsPath}/utils.js`)
 		}
 	},
 	devServer: {
@@ -107,6 +109,15 @@ module.exports = {
 		hot: true,
 		overlay: true,
 		disableHostCheck: true,
-		historyApiFallback: true
+		historyApiFallback: true,
+		before(app) {
+			const mock = fs.existsSync(`${viewsPath}/${appName}/mock.js`) && require(`${viewsPath}/${appName}/mock.js`)
+
+			mock && Object.entries(mock).map(
+				([method, paths]) => Object.entries(paths).map(
+					([path, mock]) => app[method](path, bodyParser.json(), (req, res) => setTimeout(() => res.json(mock(req)), 1000))
+				)
+			)
+		}
 	}
 }

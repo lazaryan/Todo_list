@@ -7,6 +7,8 @@ import { ThemeProvider } from 'styled-components'
 import { Input, themes } from 'ui'
 import { Flex } from 'reflexbox'
 
+import { setState } from './actions'
+
 import Header from './components/header'
 
 const App = props => {
@@ -15,14 +17,18 @@ const App = props => {
 	const appStore = useSelector(state => state.app)
 
 	const [initialised, setInitialised] = useState(false)
+	const [theme, setTheme] = useState()
 
 	useEffect(() => {
-		console.log(appStore)
-		setInitialised(true)
+		dispatch(setState())
+			.then(({ payload }) => (
+				setTheme(payload.theme && themes[payload.theme] || themes['main']),
+				setInitialised(true)
+			))
 	}, [])
 
 	return (
-		initialised && <ThemeProvider theme={themes['dark']}>
+		initialised && <ThemeProvider theme={theme}>
 			<Flex width="100%" flexDirection="column">
 				<Header />
 				<Flex>
