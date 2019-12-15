@@ -9,6 +9,7 @@ export default {
 		blue: '#56C9EB'
 	},
 	color: {
-		main: '#fff'
+		main: '#fff',
+		dark: '#222'
 	}
 }

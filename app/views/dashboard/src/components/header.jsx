@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Flex, Box } from 'reflexbox'
-import { Text, Input, Icon, Skeleton as UISkeleton } from 'ui'
+import { Text, Input, Icon, Button, Skeleton as UISkeleton } from 'ui'
 import { ThemeContext } from 'styled-components'
 
 import { access } from 'utils'
@@ -25,10 +25,12 @@ export const Component = props => {
 	return (
 		<Flex justifyContent="space-between" alignItems="center" width="[1]" height="100%">
 			<Flex>
+				<Button mr="1rem" disabled={true}>Домашняя</Button>
+				<Button mr="2rem" disabled={true}>Доски</Button>
 				{!initialUpdateName &&
-					<Box p=".5rem 1rem" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == access[1] ? 'pointer' : 'default' }}>
+					<Flex p=".5rem 1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == access[1] ? 'pointer' : 'default' }}>
 						<Text onClick={handleInitialUpdateName} styles={themeContext.text.styles.label}>{dashboard.name}</Text>
-					</Box> ||
+					</Flex> ||
 					<Input value={dashboard.name} onBlur={handleUpdateName} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
 			</Flex>

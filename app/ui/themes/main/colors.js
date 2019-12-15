@@ -5,7 +5,8 @@ export default {
 	},
 	bg: {
 		dark: '#eee',
-		main: '#fafafa'
+		main: '#fafafa',
+		green: '#4AAF77'
 	},
 	color: {
 		main: '#222'
