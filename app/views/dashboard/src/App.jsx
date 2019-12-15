@@ -1,11 +1,11 @@
-import { useEffect, useState, Suspense, lazy } from 'react'
+import { useEffect, useState, useContext, Suspense, lazy } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { isEmpty as _isEmpty } from 'lodash'
 import queryString from 'query-string'
 import axios from 'axios'
 
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider, ThemeContext } from 'styled-components'
 import { Input, themes } from 'ui'
 import { Flex, Box } from 'reflexbox'
 
@@ -16,6 +16,10 @@ import { Skeleton as HeaderSkeleton } from './components/header'
 
 const Header = lazy(() => import('./components/header'))
 
+const context = {
+	theme: themes['main']
+}
+
 const App = props => {
 	const dispatch = useDispatch()
 
@@ -25,7 +29,10 @@ const App = props => {
 	useEffect(() => {
 		dispatch(setState())
 			.then(({ payload }) => (
-				payload.data.theme && setTheme(themes[payload.data.theme]),
+				payload.data.theme && (
+					setTheme(themes[payload.data.theme]),
+					context.theme = themes[payload.data.theme]
+				),
 				dispatch(setStateDashboard(getQuery().id))
 					.then(() => setInitialised(true))
 					.catch(console.error)
@@ -50,13 +57,17 @@ const App = props => {
 	)
 }
 
-export const Skeleton = props => (
-	<Flex width="100%" flexDirection="column">
-		<Box width="[1]" height="80px" bg={themes['main'].colors.default.bg.dark} p="1.2rem 1rem">
-			<HeaderSkeleton />
-		</Box>
-	</Flex>
-)
+export const Skeleton = props => {
+	const themeContext = useContext(ThemeContext)
+
+	return (
+		<Flex width="100%" flexDirection="column">
+			<Box width="[1]" height="80px" bg={themeContext.colors.default.bg.dark} p="1.2rem 1rem">
+				<HeaderSkeleton />
+			</Box>
+		</Flex>
+	)
+}
 
 export default () => (
 	<BrowserRouter>

@@ -23,5 +23,5 @@ export default css`
 	display: inline-block;
 	border-radius: 5px;
 	border: 1px solid ${colors.border.main};
-	animation: ${animation} 1.2s 1.2s ease-in-out infinite;
+	animation: ${animation} 1.2s ease-in-out infinite;
 `
