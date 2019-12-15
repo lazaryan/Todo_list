@@ -1,6 +1,7 @@
 export const input = require('./input')
 export const skeleton = require('./skeleton')
 export const text = require('./text')
+export const icon = require('./icon')
 
 export const mixin = require('./mixin')
 export const colors = require('./colors')
@@ -10,6 +11,7 @@ export default {
 	input,
 	skeleton,
 	text,
+	icon,
 	mixin,
 	colors
 }

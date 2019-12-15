@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Flex, Box } from 'reflexbox'
-import { Text, Input, Skeleton as UISkeleton } from 'ui'
+import { Text, Input, Icon, Skeleton as UISkeleton } from 'ui'
 import { ThemeContext } from 'styled-components'
 
 import { access } from 'utils'
@@ -29,11 +29,14 @@ export const Component = props => {
 					<Box p=".5rem 1rem" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == access[1] ? 'pointer' : 'default' }}>
 						<Text onClick={handleInitialUpdateName} styles={themeContext.text.styles.label}>{dashboard.name}</Text>
 					</Box> ||
-					<Input value={dashboard.name} onBlur={handleUpdateName} focus={true} styles={themeContext.input.styles.accent} sx={{ py: '.3rem', width: '20rem' }} />
+					<Input value={dashboard.name} onBlur={handleUpdateName} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
 			</Flex>
-			<Flex>
-				<Text>{app.user.name}</Text>
+			<Flex alignItems="center">
+				<Text sx={{ mr: '2rem' }}>{app.user.name}</Text>
+				<Box height="3rem" sx={{ overflow: 'hidden', borderRadius: '50%', cursor: 'pointer', border: `1px solid ${themeContext.colors.default.border.main}` }}>
+					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account} />
+				</Box>
 			</Flex>
 		</Flex>
 	)
@@ -46,9 +49,9 @@ export const Skeleton = props => (
 			<UISkeleton width="3rem" height="2rem" mr="2rem"/>
 			<UISkeleton width="15rem" height="2rem" mr="1rem"/>
 		</Flex>
-		<Flex>
+		<Flex alignItems="center">
 			<UISkeleton width="12rem" height="2rem" mr="1rem"/>
-			<UISkeleton width="2rem" height="2rem" sx={{ borderRadius: '50%' }} />
+			<UISkeleton width="3rem" height="3rem" sx={{ borderRadius: '50%' }} />
 		</Flex>
 	</Flex>
 )
