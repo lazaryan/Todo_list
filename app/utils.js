@@ -1,5 +1,13 @@
 import axios from 'axios'
 
+export const access = {
+	1: 'all',
+	2: 'update tasks',
+	3: 'update board',
+	4: 'read all',
+	5: 'read tasks'
+}
+
 export class API {
 	constructor() {
 

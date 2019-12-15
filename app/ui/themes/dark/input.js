@@ -1,25 +1,32 @@
 import { css } from 'styled-components'
 import { input as mainInputTheme } from 'theme'
+import colors from './colors'
 
 const container = css`
 	${mainInputTheme.styles.default.container}
-	border: 2px solid #ccc;
-	background-color: #333333;
-`
+	border: 2px solid ${colors.border.light};`
 
 const input = css`
 	${mainInputTheme.styles.default.input}
 	background-color: transparent;
-	color: #fff;
+	color: ${colors.color.main};
 
 	&:hover, &:focus {
-		border-bottom: 2px solid #56C9EB;
+		border-bottom: 2px solid ${colors.border.main};
 	}
 `
 
 export const styles = {
 	default: {
 		container,
+		input
+	},
+	accent: {
+		container: css`
+			${container}
+			border: none;
+			padding: 0 .5rem;
+		`,
 		input
 	}
 }

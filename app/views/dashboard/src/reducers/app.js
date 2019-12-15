@@ -5,7 +5,8 @@ import {
 
 const initialState = {
 	REST: {},
-	theme: undefined
+	data: {},
+	user: {}
 }
 
 const reducers = {
