@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { isEmpty as _isEmpty } from 'lodash'
+import { isEmpty as _isEmpty, trim as _trim, replace as _replace } from 'lodash'
 import styled, { ThemeContext } from 'styled-components'
 import { Flex } from 'reflexbox'
 
@@ -35,9 +35,13 @@ export const Component = props => {
 		(value => (setValue(value), props.onBlur && props.onBlur(value)))(validation('onBlur')(event.target.value))
 	)
 
-	const validation = type => value => (validator => validator ? validator() : value)(({
-		onChange: {},
-		onBlur: {}
+	const validation = type => value => (validator => validator ? validator(value) : value)(({
+		onChange: {
+			'text': value => value.length > props.maxLength ? value.substring(0, props.maxLength) : value
+		},
+		onBlur: {
+			'text': value => _trim(_replace(value, /\s+/g, ' '))
+		}
 	})[type][metaType])
 
 	return (
@@ -54,12 +58,14 @@ Component.propTypes = {
 	desabled: PropTypes.bool,
 	type: PropTypes.oneOf(['text', 'email', 'number', 'persentage']),
 	focus: PropTypes.bool,
+	maxLength: PropTypes.number
 }
 
 Component.defaultProps = {
 	value: '',
 	type: 'text',
 	focus: false,
+	maxLength: 127
 }
 
 export default Component

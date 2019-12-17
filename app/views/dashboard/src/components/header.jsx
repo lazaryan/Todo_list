@@ -6,6 +6,7 @@ import { Text, Input, Icon, Button, Skeleton as UISkeleton } from 'ui'
 import { ThemeContext } from 'styled-components'
 
 import { updateDashboard } from '../actions/dashboard'
+import { UPDATE_DASHBOARD } from '../actions/dashboard/types'
 
 export const Component = props => {
 	const dispatch = useDispatch()
@@ -19,22 +20,28 @@ export const Component = props => {
 
 	const handleInitialUpdateName = () => userAccess == app.data.access[1] && setInitialUpdateName(true)
 
-	const handleUpdateName = value =>
+	const handleUpdate = (field, value) =>
+		dispatch({
+			type: UPDATE_DASHBOARD,
+			payload: { [field]: value }
+		})
+
+	const handleSendUpdate = (field, value) =>
 		dispatch(updateDashboard({
 			entity_id: dashboard.entity_id,
-			name: value
-		})).then(() => setInitialUpdateName(false))
+			[field]: value
+		}))
 
 	return (
 		<Flex justifyContent="space-between" alignItems="center" width="[1]" height="100%">
 			<Flex>
 				<Button mr="1rem" disabled={true}>Домашняя</Button>
 				<Button mr="2rem" disabled={true}>Доски</Button>
-				{!initialUpdateName &&
+				{!initialUpdateName && dashboard.name &&
 					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == app.data.access[1] ? 'pointer' : 'default' }}>
 						<Text onClick={handleInitialUpdateName} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name}</Text>
 					</Flex> ||
-					<Input value={dashboard.name} onBlur={handleUpdateName} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
+					<Input value={dashboard.name} onChange={value => handleUpdate('name', value)} onBlur={value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
 			</Flex>
 			<Flex alignItems="center">

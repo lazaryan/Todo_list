@@ -15,6 +15,10 @@ export class API {
 		return this.handleResponse(axios.put(url, payload), type, dispatch)
 	}
 
+	create(url, payload, type, dispatch) {
+		return this.handleResponse(axios.post(url, payload), type, dispatch)
+	}
+
 	handleResponse(request, type, dispatch) {
 		return type && dispatch ?
 			request
