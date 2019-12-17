@@ -1,6 +1,7 @@
 import update from 'immutability-helper'
 import {
-	SET_STATE
+	SET_STATE,
+	UPDATE_DASHBOARD
 } from '../actions/dashboard/types'
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
 
 const reducres = {
 	[SET_STATE]: payload => ({ $merge: payload }),
+	[UPDATE_DASHBOARD]: payload => ({ $merge: payload }),
 }
 
 export default (state = initialState, action) =>

@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, Suspense, lazy } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { isEmpty as _isEmpty } from 'lodash'
+import { isEmpty as _isEmpty, last as _last } from 'lodash'
 import queryString from 'query-string'
 import axios from 'axios'
 
@@ -11,6 +11,8 @@ import { Flex, Box } from 'reflexbox'
 
 import { setState, setTheme as setThemeApp, setUser } from './actions'
 import { setState as setStateDashboard } from './actions/dashboard'
+
+import { UPDATE_USER } from './actions/types'
 
 import { Skeleton as HeaderSkeleton } from './components/header'
 
@@ -29,14 +31,21 @@ const App = props => {
 	const getQuery = () => queryString.parse(props.location.search)
 
 	const [dispatchingMethods] = useState([
-		[payload => payload.theme && payload.theme != 'main' && setThemeApp(payload.theme),
-			payload => payload.theme && themes[payload.theme] && (
-				setTheme(themes[payload.theme]),
-				context.theme = themes[payload.theme]
+		[
+			({ theme }) => theme && theme != 'main' && setThemeApp(theme),
+			({ theme }) => theme && themes[theme] && (
+				setTheme(themes[theme]),
+				context.theme = themes[theme]
 			)
 		],
 		[() => setStateDashboard(getQuery().id)],
-		[() => setUser()]
+		[
+			() => setUser(),
+			user => !user.access && dispatch({
+				type: UPDATE_USER,
+				payload: { access: 5 }
+			})
+		]
 	])
 
 	function* updateState() {

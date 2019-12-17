@@ -3,6 +3,7 @@ import {
 	SET_STATE,
 	SET_USER,
 	SET_THEME,
+	UPDATE_USER
 } from '../actions/types'
 
 const initialState = {
@@ -16,6 +17,7 @@ const reducers = {
 	[SET_STATE]: payload => ({ $merge: payload }),
 	[SET_USER]: payload => ({ user: { $set: payload } }),
 	[SET_THEME]: payload => ({ theme: { $set: payload.theme } }),
+	[UPDATE_USER]: payload => ({ user: { $merge: payload } }),
 }
 
 export default (state = initialState, action) =>

@@ -10,7 +10,7 @@ export const setState = () =>
 	dispatch => new API().read('state', null, SET_STATE, dispatch)
 
 export const setUser = () =>
-	dispatch => new API().read('user', null, SET_USER, dispatch)
+	(dispatch, getState) => new API().read(`${getState().app.REST.user}`, null, SET_USER, dispatch)
 
 export const setTheme = theme =>
-	(dispatch, getState) => new API().read(`${getState().app.REST.theme}/${theme}`, null, SET_THEME, dispatch)
+	(dispatch, getState) => new API().read(`${getState().app.REST.theme}`, { theme }, SET_THEME, dispatch)
