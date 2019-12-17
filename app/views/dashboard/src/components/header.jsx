@@ -15,10 +15,8 @@ export const Component = props => {
 	const app = useSelector(state => state.app)
 	const dashboard = useSelector(state => state.dashboard)
 
-	const [initialUpdateName, setInitialUpdateName] = useState()
-	const [userAccess] = useState(app.user.access)
-
-	const handleInitialUpdateName = () => userAccess == app.data.access[1] && setInitialUpdateName(true)
+	const [initialUpdateName, setInitialUpdateName] = useState(!Boolean(dashboard.name))
+	const [disabledUpdate] = useState(app.user.access != app.data.access[1])
 
 	const handleUpdate = (field, value) =>
 		dispatch({
@@ -37,15 +35,15 @@ export const Component = props => {
 			<Flex>
 				<Button mr="1rem" disabled={true}>Домашняя</Button>
 				<Button mr="2rem" disabled={true}>Доски</Button>
-				{!initialUpdateName && dashboard.name &&
-					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == app.data.access[1] ? 'pointer' : 'default' }}>
-						<Text onClick={handleInitialUpdateName} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name}</Text>
+				{(!initialUpdateName || disabledUpdate) &&
+					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: !disabledUpdate ? 'pointer' : 'default' }}>
+						<Text onClick={() => !disabledUpdate && setInitialUpdateName(true)} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name || 'dashboard name'}</Text>
 					</Flex> ||
 					<Input value={dashboard.name} placeholder="write dashboard name..." onChange={value => handleUpdate('name', value)} onBlur={value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
 			</Flex>
 			<Flex alignItems="center">
-				<Text sx={{ mr: '2rem' }}>{app.user.name}</Text>
+				{app.user && <Text sx={{ mr: '2rem' }}>{app.user.name}</Text>}
 				<Box height="3rem" sx={{ overflow: 'hidden', borderRadius: '50%', cursor: 'pointer', border: `1px solid ${themeContext.colors.default.border.main}` }}>
 					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account} sx={{ backgroundPosition: '0 8px' }} />
 				</Box>

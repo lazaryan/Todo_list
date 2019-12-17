@@ -36,7 +36,7 @@ const output = {
 	path: viewsPath,
 	filename: `${appName || '[name]'}/dist/${boundleFile}`,
 	publicPath: '/',
-	chunkFilename: 'chunks/[id].[chunkhash].js'
+	chunkFilename: `${appName && `${appName}/` || ''}chunks/[id].[chunkhash].js`
 }
 
 const HtmlWebpackPluginOptionsFactor = app => Object.assign(
@@ -75,7 +75,21 @@ const optimization = mode !== 'production' ? {} : {
 			cache: true,
 			parallel: true
 		})
-	]
+	],
+	splitChunks: {
+		chunks: 'all',
+		minSize: 30000,
+		cacheGroups: {
+			commons: {
+				name(module, chunks, cacheGroupKey) {
+					const moduleFileName = module.identifier().split('/').reduceRight(item => item)
+					const allChunksNames = chunks.map((item) => item.name).join('~')
+
+					return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`
+				},
+			}
+		}
+	}
 }
 
 module.exports = {

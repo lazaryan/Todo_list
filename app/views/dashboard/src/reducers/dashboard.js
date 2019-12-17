@@ -5,8 +5,7 @@ import {
 } from '../actions/dashboard/types'
 
 const initialState = {
-	name: undefined,
-	access: undefined
+	name: undefined
 }
 
 const reducres = {

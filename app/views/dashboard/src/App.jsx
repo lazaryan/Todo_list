@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, Suspense, lazy } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { isEmpty as _isEmpty, last as _last } from 'lodash'
+import { isEmpty as _isEmpty, last as _last, pull as _pull, values as _values } from 'lodash'
 import queryString from 'query-string'
 import axios from 'axios'
 
@@ -28,55 +28,43 @@ const App = props => {
 	const [initialised, setInitialised] = useState(false)
 	const [theme, setTheme] = useState(themes['main'])
 
-	const getQuery = () => queryString.parse(props.location.search)
-
-	const [dispatchingMethods] = useState([
-		[
-			({ theme }) => theme && theme != 'main' && setThemeApp(theme),
-			({ theme }) => theme && themes[theme] && (
-				setTheme(themes[theme]),
-				context.theme = themes[theme]
-			)
-		],
-		[() => setStateDashboard(getQuery().id)],
-		[
-			() => setUser(),
-			user => !user.access && dispatch({
-				type: UPDATE_USER,
-				payload: { access: 5 }
-			})
-		]
+	const [process, setProcess] = useState([
+		setThemeApp, setUser, setStateDashboard
 	])
 
-	function* updateState() {
-		for(let i = 0; i < dispatchingMethods.length; i++) yield;
-
-		yield setInitialised(true)
-	}
-
 	useEffect(() => {
-		const gen = updateState()
-
 		dispatch(setState())
-			.then(({ payload }) => (
-				gen.next(),
-				dispatchingMethods.forEach(([dispachMethod, callback, error]) => {
-					const loadMethod = dispachMethod(payload)
-
-					loadMethod && dispatch(loadMethod)
-						.then(({ payload }) =>(
-							gen.next(),
-							callback && callback(payload)
+			.then(({ payload }) => {
+				payload.theme && payload.theme !== 'main' && dispatch(setThemeApp(payload.theme))
+						.then(({ theme }) => theme && themes[theme] && (
+							setTheme(themes[theme]),
+							context.theme = themes[theme],
+							setProcess([..._pull(process, setThemeApp)])
 						))
-						.catch(err => (
-							console.error(err),
-							error && error(err)
-						)) || gen.next()
-					}
-				)
-			))
+						.catch(console.error) || setProcess([..._pull(process, setThemeApp)])
+
+				dispatch(setStateDashboard(getQuery().id))
+					.then(() => setProcess([..._pull(process, setStateDashboard)]))
+					.catch(console.error)
+
+				dispatch(setUser())
+					.then(userPayload => (
+						!userPayload.payload.access && dispatch({
+							type: UPDATE_USER,
+							payload: { access: _last(_values(payload.data.access)) }
+						}),
+						setProcess([..._pull(process, setUser)])
+					))
+					.catch(console.error)
+			})
 			.catch(console.error)
 	}, [])
+
+	useEffect(() => {
+		!process.length && setInitialised(true)
+	}, [process])
+
+	const getQuery = () => queryString.parse(props.location.search)
 
 	return (
 		<ThemeProvider theme={theme}>

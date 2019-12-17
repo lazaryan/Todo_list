@@ -29,7 +29,7 @@ module.exports = {
 		}),
 		'/dashboard/:id': req => ({
 			entity_id: 1,
-			name: 'test dashboard name',
+			name: '',
 		})
 	},
 	put: {
