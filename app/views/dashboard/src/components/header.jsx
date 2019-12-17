@@ -28,8 +28,8 @@ export const Component = props => {
 				<Button mr="1rem" disabled={true}>Домашняя</Button>
 				<Button mr="2rem" disabled={true}>Доски</Button>
 				{!initialUpdateName &&
-					<Flex p=".5rem 1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == access[1] ? 'pointer' : 'default' }}>
-						<Text onClick={handleInitialUpdateName} styles={themeContext.text.styles.label}>{dashboard.name}</Text>
+					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: userAccess == access[1] ? 'pointer' : 'default' }}>
+						<Text onClick={handleInitialUpdateName} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name}</Text>
 					</Flex> ||
 					<Input value={dashboard.name} onBlur={handleUpdateName} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
@@ -37,7 +37,7 @@ export const Component = props => {
 			<Flex alignItems="center">
 				<Text sx={{ mr: '2rem' }}>{app.user.name}</Text>
 				<Box height="3rem" sx={{ overflow: 'hidden', borderRadius: '50%', cursor: 'pointer', border: `1px solid ${themeContext.colors.default.border.main}` }}>
-					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account} />
+					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account} sx={{ backgroundPosition: '0 8px' }} />
 				</Box>
 			</Flex>
 		</Flex>

@@ -2,7 +2,6 @@ import { css } from 'styled-components'
 import colors from './colors'
 
 export const button = css`
-	height: 3rem;
 	align-items: center;
 	padding: 0 1rem;
 	border-radius: 10px;
@@ -11,7 +10,8 @@ export const button = css`
 	text-transform: uppercase;
 	font-weight: 500;
 	cursor: pointer;
-	font-size: 1.2rem;
+	height: 2rem;
+	font-size: 1rem;
 
 	&:hover, &:focus {
 		opacity: .8;
