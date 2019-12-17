@@ -6,7 +6,9 @@ import { Flex } from 'reflexbox'
 
 const context = {}
 
-export const Component = props => {	
+export const Component = props => {
+	context.styles = props.styles
+
 	const inputRef = useRef()
 	const [value, setValue] = useState(props.value)
 	const [metaType] = useState({
@@ -47,8 +49,8 @@ export const Component = props => {
 	)
 }
 
-const Container = styled(Flex)`${props => context.styles.container || themeContext.input.styles.default.container}`
-const Input = styled.input`${props => context.styles.input || themeContext.input.styles.default.input}`
+const Container = styled(Flex)`${props => context.styles.container || props.theme.input.styles.default.container}`
+const Input = styled.input`${props => context.styles.input || props.theme.input.styles.default.input}`
 
 Component.propTypes = {
 	desabled: PropTypes.bool,
