@@ -1,16 +1,12 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { isEmpty as _isEmpty, trim as _trim, replace as _replace } from 'lodash'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { Flex } from 'reflexbox'
 
 const context = {}
 
-export const Component = props => {
-	const themeContext = useContext(ThemeContext)
-
-	context.styles = props.styles || themeContext.input.styles.default
-	
+export const Component = props => {	
 	const inputRef = useRef()
 	const [value, setValue] = useState(props.value)
 	const [metaType] = useState({
@@ -46,26 +42,28 @@ export const Component = props => {
 
 	return (
 		<Container sx={props.sx}>
-			<Input type={metaType} value={value} onChange={onChange} onBlur={onBlur} ref={inputRef} />
+			<Input type={metaType} value={value} onChange={onChange} onBlur={onBlur} ref={inputRef} placeholder={props.placeholder}/>
 		</Container>
 	)
 }
 
-const Container = styled(Flex)`${() => context.styles.container}`
-const Input = styled.input`${() => context.styles.input}`
+const Container = styled(Flex)`${props => context.styles.container || themeContext.input.styles.default.container}`
+const Input = styled.input`${props => context.styles.input || themeContext.input.styles.default.input}`
 
 Component.propTypes = {
 	desabled: PropTypes.bool,
 	type: PropTypes.oneOf(['text', 'email', 'number', 'persentage']),
 	focus: PropTypes.bool,
-	maxLength: PropTypes.number
+	maxLength: PropTypes.number,
+	placeholder: PropTypes.string
 }
 
 Component.defaultProps = {
 	value: '',
 	type: 'text',
 	focus: false,
-	maxLength: 127
+	maxLength: 127,
+	placeholder: ''
 }
 
 export default Component
