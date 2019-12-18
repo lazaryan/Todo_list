@@ -31,10 +31,10 @@ export const Component = props => {
 		}))
 
 	return (
-		<Flex justifyContent="space-between" alignItems="center" width="[1]" height="100%">
+		<Flex justifyContent="space-between" alignItems="center" height="100%">
 			<Flex>
-				<Button mr="1rem" disabled={true}>Домашняя</Button>
-				<Button mr="2rem" disabled={true}>Доски</Button>
+				<Button mr="1rem" disabled={true}>Home</Button>
+				<Button mr="2rem" disabled={true}>Boards</Button>
 				{(!initialUpdateName || disabledUpdate) &&
 					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: !disabledUpdate ? 'pointer' : 'default' }}>
 						<Text onClick={() => !disabledUpdate && setInitialUpdateName(true)} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name || 'dashboard name'}</Text>
@@ -53,7 +53,7 @@ export const Component = props => {
 }
 
 export const Skeleton = props => (
-	<Flex justifyContent="space-between" alignItems="center" width="[1]" height="100%">
+	<Flex justifyContent="space-between" alignItems="center" height="100%">
 		<Flex>
 			<UISkeleton width="3rem" height="2rem" mr="1rem"/>
 			<UISkeleton width="3rem" height="2rem" mr="2rem"/>

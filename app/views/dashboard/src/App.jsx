@@ -15,8 +15,10 @@ import { setState as setStateDashboard } from './actions/dashboard'
 import { UPDATE_USER } from './actions/types'
 
 import { Skeleton as HeaderSkeleton } from './components/header'
+import { Skeleton as DashboardSkeleton } from './components/dashboard'
 
 const Header = lazy(() => import('./components/header'))
+const Dashboard = lazy(() => import('./components/dashboard'))
 
 const context = {
 	theme: themes['main']
@@ -70,12 +72,16 @@ const App = props => {
 		<ThemeProvider theme={theme}>
 			{!initialised && <Skeleton /> ||
 			<Flex width="100%" flexDirection="column">
-				<Box width="[1]" height="80px" bg={theme.colors.default.bg.dark} p="1.2rem 1rem">
+				<Box width={[1]} height="80px" bg={theme.colors.default.bg.dark} p="1.2rem 1rem">
 					<Suspense fallback={<HeaderSkeleton />}>
 						<Header />
 					</Suspense>
 				</Box>
-				<Box></Box>
+				<Box height="calc(100vh - 80px)" sx={{ overflow: 'hidden' }}>
+					<Suspense fallback={<DashboardSkeleton />}>
+						<Dashboard />
+					</Suspense>
+				</Box>
 			</Flex>}
 		</ThemeProvider>
 	)
@@ -86,8 +92,11 @@ export const Skeleton = props => {
 
 	return (
 		<Flex width="100%" flexDirection="column">
-			<Box width="[1]" height="80px" bg={themeContext.colors.default.bg.dark} p="1.2rem 1rem">
+			<Box width={[1]} height="80px" bg={themeContext.colors.default.bg.dark} p="1.2rem 1rem">
 				<HeaderSkeleton />
+			</Box>
+			<Box height="calc(100vh - 80px)" sx={{ overflow: 'hidden' }}>
+				<DashboardSkeleton />
 			</Box>
 		</Flex>
 	)

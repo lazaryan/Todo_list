@@ -3,6 +3,7 @@ import colors from './colors'
 
 export const button = css`
 	align-items: center;
+	justify-content: center;
 	padding: 0 1rem;
 	border-radius: 10px;
 	background-color: ${colors.bg.green};
@@ -11,7 +12,7 @@ export const button = css`
 	font-weight: 500;
 	cursor: pointer;
 	height: 2rem;
-	font-size: 1rem;
+	font-size: 1.1rem;
 
 	&:hover, &:focus {
 		opacity: .8;
@@ -27,8 +28,14 @@ export const button = css`
 	`}
 `
 
+export const accent = css`
+	${button}
+	background-color: ${colors.bg.blue};
+`
+
 export const styles = {
-	default: button
+	default: button,
+	accent
 }
 
 export default styles

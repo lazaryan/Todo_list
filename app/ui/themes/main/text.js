@@ -12,9 +12,18 @@ export const label = css`
 	font-weight: 500;
 `
 
+export const placeholder = css`
+	${defaultStyle}
+	color: #999;
+	text-transform: uppercase;
+	font-weight: 500;
+	text-align: center;
+`
+
 export const styles = {
 	default: defaultStyle,
-	label
+	label,
+	placeholder
 }
 
 export default styles

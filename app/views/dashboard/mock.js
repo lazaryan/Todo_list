@@ -16,6 +16,7 @@ module.exports = {
 				dashboard: '/dashboard',
 				theme: '/theme',
 				user: '/user',
+				sections: '/dashboard/sections'
 			},
 			theme: 'main'
 		}),
@@ -30,6 +31,15 @@ module.exports = {
 		'/dashboard/:id': req => ({
 			entity_id: 1,
 			name: '',
+			style: 'list'
+		}),
+		'/dashboard/sections/:id': req => ({
+			sections: {
+				1: {
+					entity_id: 1,
+					name: 'test board'
+				}
+			}
 		})
 	},
 	put: {

@@ -6,7 +6,8 @@ export default {
 	bg: {
 		dark: '#eee',
 		main: '#fafafa',
-		green: '#4AAF77'
+		green: '#4AAF77',
+		blue: '#56C9EB'
 	},
 	color: {
 		main: '#222'
