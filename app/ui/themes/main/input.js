@@ -9,6 +9,7 @@ const container = css`
 	box-sizing: border-box;
 	border-radius: 10px;
 	background-color: transparent;
+	align-self: center;
 `
 
 const input = css`

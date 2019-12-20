@@ -7,7 +7,7 @@ import { Flex } from 'reflexbox'
 const context = {}
 
 export const Component = props => {
-	context.styles = props.styles
+	context.styles = props.styles || {}
 
 	const inputRef = useRef()
 	const [value, setValue] = useState(props.value)

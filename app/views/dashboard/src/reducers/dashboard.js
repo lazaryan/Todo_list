@@ -9,14 +9,14 @@ import {
 const initialState = {
 	name: undefined,
 	style: undefined,
-	sections: {}
+	sections: []
 }
 
 const reducres = {
 	[SET_STATE]: payload => ({ $merge: payload }),
 	[UPDATE_DASHBOARD]: payload => ({ $merge: payload }),
 	[SET_SECTIONS]: payload => ({ sections: { $set: payload.sections } }),
-	[CREATE_SECTION]: payload => ({ sections: { $merge: payload } }),
+	[CREATE_SECTION]: payload => ({ sections: { $push: [payload] } }),
 }
 
 export default (state = initialState, action) =>

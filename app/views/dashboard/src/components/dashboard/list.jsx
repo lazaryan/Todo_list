@@ -17,7 +17,7 @@ export const Component = props => {
 
 	return (
 		<Flex width={[1]} justifyContent={showTask && 'initial' || 'center'}>
-			<Box width={[0.7]} p="1rem 1rem" sx={{ boxShadow: '2px 0 15px #555' }}>
+			<Box width={[0.7]} p="1rem 1rem" sx={{ boxShadow: '2px 0 15px #ccc' }}>
 				<Box width={[1]} mb="2rem">
 					{
 						_isEmpty(sections) && <Text styles={props => props && props.theme.text.styles.placeholder} style={{ width: '100%' }}>list is empty</Text> ||

@@ -4,7 +4,7 @@ import { values as _values, isEmpty as _isEmpty, pull as _pull } from 'lodash'
 
 import { Flex, Box } from 'reflexbox'
 import { Text, Button, Skeleton as UISkeleton } from 'ui'
-import Board from './dashboard/board'
+import Board, { Skeleton as BoardSkeleton } from './dashboard/board'
 
 import { createSection } from '../../actions/dashboard'
 
@@ -24,10 +24,11 @@ export const Component = props => {
 	)
 
 	return (
-		<Flex width={[1]} pt="1rem" pl="2rem">
-			{!_isEmpty(sections) && sections.map(item =>
+		<Flex pt="1rem" pl="2rem" flex="none" sx={{ minWidth: '100%' }}>
+			{!_isEmpty(dashboard.sections) && dashboard.sections.map(item =>
 				<Board key={item.entity_id} item={item} sx={{ mr: '2rem' }}/>
 			)}
+			{process.includes(createSection) && <BoardSkeleton sx={{ mr: '2rem' }} />}
 			<Button onClick={handleCreateBoard} disabled={process.includes(createSection)} styles={props => props && props.theme.button.styles.accent} sx={{ width: '15rem', height: '3rem' }}>Add Board +</Button>
 		</Flex>
 	)
@@ -35,9 +36,9 @@ export const Component = props => {
 
 export const Skeleton = props => (
 	<Flex width={[1]} pt="1rem" pl="2rem">
-		<UISkeleton width="15rem" height="60%" mr="2rem" />
-		<UISkeleton width="15rem" height="80%" mr="2rem" />
-		<UISkeleton width="15rem" height="73%" />
+		<BoardSkeleton count={2} sx={{ mr: '2rem' }} />
+		<BoardSkeleton count={4} sx={{ mr: '2rem' }} />
+		<BoardSkeleton count={1} sx={{ mr: '2rem' }} />
 	</Flex>
 )
 
