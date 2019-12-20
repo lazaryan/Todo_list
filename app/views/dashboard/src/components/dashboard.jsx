@@ -7,6 +7,7 @@ import { Skeleton as UISkeleton } from 'ui'
 import { setSections } from '../actions/dashboard'
 
 import List, { Skeleton as ListSkeleton } from './dashboard/list'
+import Dashboard, { Skeleton as DashboardSkeleton } from './dashboard/dashboard'
 
 export const Component = props => {
 	const dispatch = useDispatch()
@@ -14,7 +15,6 @@ export const Component = props => {
 	const dashboard = useSelector(state => state.dashboard)
 
 	const [initialised, setInitialised] = useState(false)
-	const style = dashboard.style || 'list'
 
 	useEffect(() => {
 		dispatch(setSections())
@@ -26,10 +26,12 @@ export const Component = props => {
 		<Flex width={[1]} height="100%">
 			{!initialised &&
 				<>
-					{style === 'list' && <ListSkeleton />}
+					{(!dashboard.style || dashboard.style === 'default') && <DashboardSkeleton />}
+					{dashboard.style === 'list' && <ListSkeleton />}
 				</> ||
 				<>
-					{style === 'list' && <List />}
+					{(!dashboard.style || dashboard.style === 'default') && <Dashboard />}
+					{dashboard.style === 'list' && <List />}
 				</>
 			}
 		</Flex>
@@ -38,9 +40,9 @@ export const Component = props => {
 
 export const Skeleton = props => (
 	<Flex pt="2rem" pl="4rem" flexDirection="column">
-		<UISkeleton width="45rem" height="2rem" mb="1rem" />
-		<UISkeleton width="30rem" height="2rem" mb="1rem" />
-		<UISkeleton width="35rem" height="2rem" mb="1rem" />
+		<UISkeleton width="70%" height="2rem" mb="1rem" />
+		<UISkeleton width="50%" height="2rem" mb="1rem" />
+		<UISkeleton width="65%" height="2rem" mb="1rem" />
 	</Flex>
 )
 

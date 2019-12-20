@@ -3,7 +3,8 @@ import { API } from 'utils'
 import {
 	SET_STATE,
 	UPDATE_DASHBOARD,
-	SET_SECTIONS
+	SET_SECTIONS,
+	CREATE_SECTION
 } from './dashboard/types'
 
 export const setState = id =>
@@ -14,3 +15,6 @@ export const updateDashboard = payload =>
 
 export const setSections = id =>
 	(dispatch, getState) => new API().read(`${getState().app.REST.sections}/${id}`, null, SET_SECTIONS, dispatch)
+
+export const createSection = () =>
+	(dispatch, getState) => new API().create(`${getState().app.REST.sections}`, null, CREATE_SECTION, dispatch)

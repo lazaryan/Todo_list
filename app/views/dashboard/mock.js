@@ -31,7 +31,7 @@ module.exports = {
 		'/dashboard/:id': req => ({
 			entity_id: 1,
 			name: '',
-			style: 'list'
+			style: 'default'
 		}),
 		'/dashboard/sections/:id': req => ({
 			sections: {
@@ -41,6 +41,18 @@ module.exports = {
 				}
 			}
 		})
+	},
+	post: {
+		'/dashboard/sections': req => {
+			const entity_id = uuid()
+
+			return {
+				[entity_id]: {
+					entity_id,
+					name: 'test board new'
+				}
+			}
+		}
 	},
 	put: {
 		'/dashboard/:id': req => req.body.dashboard
