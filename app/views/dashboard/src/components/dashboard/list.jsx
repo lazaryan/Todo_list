@@ -1,11 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { values as _values, isEmpty as _isEmpty } from 'lodash'
+import { ThemeContext } from 'styled-components'
 
 import { Flex, Box } from 'reflexbox'
 import { Text, Button, Skeleton as UISkeleton } from 'ui'
 
 export const Component = props => {
+	const themeContext = useContext(ThemeContext)
+
 	const dashboard = useSelector(state => state.dashboard)
 
 	const [showTask, setShowTask] = useState(false)
@@ -20,12 +23,12 @@ export const Component = props => {
 			<Box width={[0.7]} p="1rem 1rem" sx={{ boxShadow: '2px 0 15px #ccc' }}>
 				<Box width={[1]} mb="2rem">
 					{
-						_isEmpty(sections) && <Text styles={props => props && props.theme.text.styles.placeholder} style={{ width: '100%' }}>list is empty</Text> ||
-						<Text styles={props => props && props.theme.text.styles.placeholder} style={{ width: '100%' }}>list tasks</Text>
+						_isEmpty(sections) && <Text styles={themeContext.text.styles.placeholder} style={{ width: '100%' }}>list is empty</Text> ||
+						<Text styles={themeContext.text.styles.placeholder} style={{ width: '100%' }}>list tasks</Text>
 					}
 				</Box>
 				<Flex width={[1]} justifyContent="center">
-					<Button styles={props => props && props.theme.button.styles.accent} sx={{ width: '20rem', height: '4rem' }}>Add section +</Button>
+					<Button styles={themeContext.theme.button.styles.accent} sx={{ width: '20rem', height: '4rem' }}>Add section +</Button>
 				</Flex>
 			</Box>
 		</Flex>

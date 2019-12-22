@@ -45,10 +45,15 @@ module.exports = {
 	post: {
 		'/dashboard/sections': req => ({
 			entity_id: uuid(),
-			name: 'test board new'
+			dashboard_id: 1,
+			name: ''
 		})
 	},
 	put: {
-		'/dashboard/:id': req => req.body.dashboard
+		'/dashboard/:id': req => req.body.dashboard,
+		'/dashboard/sections/:id': req => req.body.section
+	},
+	delete: {
+		'/dashboard/sections/:id': req => req.body.section
 	}
 }

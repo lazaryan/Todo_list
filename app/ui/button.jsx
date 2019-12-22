@@ -1,12 +1,11 @@
 import Proptypes from 'prop-types'
-import { isFunction as _isFunction } from 'lodash'
 import styled from 'styled-components'
 import { Flex } from 'reflexbox'
 
 const context = {}
 
 export const Component = props => (
-	context.styles = _isFunction(props.styles) && props.styles() || props.styles,
+	context.styles = props.styles,
 	<Button {...props} onClick={() => !props.disabled && props.onClick && props.onClick()} />
 )
 

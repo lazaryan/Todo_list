@@ -1,16 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Flex } from 'reflexbox'
 import { Skeleton as UISkeleton } from 'ui'
 
-import { setSections } from '../actions/dashboard'
+import { setSections, removeSection as actionRemoveSection } from '../actions/dashboard'
 
 import List, { Skeleton as ListSkeleton } from './dashboard/list'
 import Dashboard, { Skeleton as DashboardSkeleton } from './dashboard/dashboard'
 
+import Context from './dashboard/context'
+
 export const Component = props => {
 	const dispatch = useDispatch()
+
+	const context = useContext(Context)
 
 	const dashboard = useSelector(state => state.dashboard)
 
@@ -18,7 +22,10 @@ export const Component = props => {
 
 	useEffect(() => {
 		dispatch(setSections())
-			.then(() => setInitialised(true))
+			.then(() => (
+				setInitialised(true)),
+				context.initialised = true
+			)
 			.catch(console.error)
 	}, [])
 
@@ -40,9 +47,6 @@ export const Component = props => {
 
 export const Skeleton = props => (
 	<Flex pt="2rem" pl="4rem" flexDirection="column">
-		<UISkeleton width="70%" height="2rem" mb="1rem" />
-		<UISkeleton width="50%" height="2rem" mb="1rem" />
-		<UISkeleton width="65%" height="2rem" mb="1rem" />
 	</Flex>
 )
 

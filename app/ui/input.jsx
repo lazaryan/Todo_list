@@ -17,7 +17,7 @@ export const Component = props => {
 
 	useEffect(() => {
 		props.focus && inputRef.current.focus()
-	}, [])
+	}, [props.focus])
 
 	useEffect(() => {
 		setValue(props.value)
