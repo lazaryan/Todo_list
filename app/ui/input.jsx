@@ -33,6 +33,8 @@ export const Component = props => {
 		(value => (setValue(value), props.onBlur && props.onBlur(value)))(validation('onBlur')(event.target.value))
 	)
 
+	const onKeyPress = event => props.keyPress && (process => process && process(value))(({...props.keyPress})[event.key])
+
 	const validation = type => value => (validator => validator ? validator(value) : value)(({
 		onChange: {
 			'text': value => value.length > props.maxLength ? value.substring(0, props.maxLength) : value
@@ -44,7 +46,7 @@ export const Component = props => {
 
 	return (
 		<Container sx={props.sx}>
-			<Input type={metaType} value={value} onChange={onChange} onBlur={onBlur} ref={inputRef} placeholder={props.placeholder}/>
+			<Input type={metaType} value={value} onChange={onChange} onBlur={onBlur} onKeyPress={onKeyPress} ref={inputRef} placeholder={props.placeholder}/>
 		</Container>
 	)
 }

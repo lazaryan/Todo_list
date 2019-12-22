@@ -36,24 +36,20 @@ module.exports = {
 		'/dashboard/sections/:id': req => ({
 			sections: [
 				{
-					entity_id: 1,
+					entity_id: '1',
 					name: 'test board'
 				}
 			]
 		})
 	},
 	post: {
-		'/dashboard/sections': req => ({
-			entity_id: uuid(),
-			dashboard_id: 1,
-			name: ''
-		})
+		'/dashboard/sections': req => req.body.section
 	},
 	put: {
 		'/dashboard/:id': req => req.body.dashboard,
 		'/dashboard/sections/:id': req => req.body.section
 	},
 	delete: {
-		'/dashboard/sections/:id': req => req.body.section
+		'/dashboard/sections/:id': req => ({ entity_id: req.params.id })
 	}
 }

@@ -18,11 +18,11 @@ export const updateDashboard = payload =>
 export const setSections = id =>
 	(dispatch, getState) => new API().read(`${getState().app.REST.sections}/${id}`, null, SET_SECTIONS, dispatch)
 
-export const createSection = () =>
-	(dispatch, getState) => new API().create(`${getState().app.REST.sections}`, null, CREATE_SECTION, dispatch)
+export const createSection = payload =>
+	(dispatch, getState) => new API().create(`${getState().app.REST.sections}`, { section: payload }, CREATE_SECTION, dispatch)
 
 export const updateSection = payload =>
 	(dispatch, getState) => new API().update(`${getState().app.REST.sections}/${payload.entity_id}`, { section: payload }, UPDATE_SECTION, dispatch)
 
 export const removeSection = payload =>
-	(dispatch, getState) => new API().delete(`${getState().app.REST.sections}/${payload.entity_id}`, { section: payload.entity_id }, REMOVE_SECTION, dispatch)
+	(dispatch, getState) => new API().delete(`${getState().app.REST.sections}/${payload.entity_id}`, null, REMOVE_SECTION, dispatch)

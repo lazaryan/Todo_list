@@ -2,5 +2,8 @@ import { createContext } from 'react'
 
 export default createContext({
 	initialised: false,
-	addingItem: undefined
+	initializedItem: undefined,
+	handleSaveBoard: () => {},
+	handleUpdateBoard: () => {},
+	handleRemoveBoard: () => {}
 })

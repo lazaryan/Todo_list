@@ -8,6 +8,8 @@ import { Text, Input, Button, Loader, Dropdown, Icon, Skeleton as UISkeleton } f
 
 import { removeSection, updateSection } from '../../../actions/dashboard'
 
+import { REMOVE_SECTION } from '../../../actions/dashboard/types'
+
 import Context from '../context'
 
 export const Component = props => {
@@ -21,7 +23,7 @@ export const Component = props => {
 	const [process, setProcess] = useState([])
 
 	useEffect(() => {
-		setIsNewBoard(context.addingItem === state.entity_id)
+		setIsNewBoard(context.initializedItem === state.entity_id)
 	}, [])
 
 	useEffect(() => {
@@ -36,26 +38,28 @@ export const Component = props => {
 	}
 
 	const handleBlurName = value => (
-		value && props.item.name != value && (
-			setProcess([...process, updateSection]),
-			dispatch(updateSection({ entity_id: state.entity_id, name: value }))
-				.then(() => setProcess(_without(process, updateSection)))
-				.catch(console.error)
-		),
 		!value && (
 			isNewBoard && removeBoard() || handleUpdateState('name', props.item.name)
 		),
-		isNewBoard && (
-			context.addingItem = undefined,
-			setIsNewBoard(false)
+		value && (
+			setProcess([...process, updateSection]),
+			isNewBoard && (
+				context.handleSaveBoard(state)
+					.then(() => (
+						setProcess(_without(process, updateSection)),
+						setIsNewBoard(false)
+					))
+					.catch(console.error)
+			) ||
+				context.handleUpdateBoard(state)
+					.then(() => setProcess(_without(process, updateSection)))
+					.catch(console.error)
 		)
 	)
 
 	const removeBoard = () => (
 		setProcess([...process, updateSection]),
-		dispatch(removeSection(state))
-			.then()
-			.catch(console.error)
+		context.handleRemoveBoard(state)
 	)
 
 	const handleRemoveBoard = () => confirm('Are you sure ?') && removeBoard()

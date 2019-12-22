@@ -39,7 +39,7 @@ export const Component = props => {
 					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: !disabledUpdate ? 'pointer' : 'default' }}>
 						<Text onClick={() => !disabledUpdate && setInitialUpdateName(true)} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name || 'dashboard name'}</Text>
 					</Flex> ||
-					<Input value={dashboard.name} placeholder="write dashboard name..." onChange={value => handleUpdate('name', value)} onBlur={value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))} focus={true} styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
+					<Input value={dashboard.name} onChange={value => handleUpdate('name', value)} onBlur={value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))} focus={true} keyPress={{'Enter': value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))}} placeholder="write dashboard name..." styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
 			</Flex>
 			<Flex alignItems="center">

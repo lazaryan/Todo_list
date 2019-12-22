@@ -1,13 +1,16 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { values as _values, isEmpty as _isEmpty, without as _without } from 'lodash'
+import { isEmpty as _isEmpty, without as _without } from 'lodash'
 import { ThemeContext } from 'styled-components'
+import uuid from 'uuid'
 
 import { Flex, Box } from 'reflexbox'
 import { Text, Button, Skeleton as UISkeleton } from 'ui'
 import Board, { Skeleton as BoardSkeleton } from './dashboard/board'
 
-import { createSection } from '../../actions/dashboard'
+import { createSection, updateSection, removeSection } from '../../actions/dashboard'
+
+import { INIT_SECTION, REMOVE_SECTION } from '../../actions/dashboard/types'
 
 import Context from './context'
 
@@ -19,25 +22,65 @@ export const Component = props => {
 
 	const dashboard = useSelector(state => state.dashboard)
 
-	const [process, setProcess] = useState([])
+	const [disabledAdd, setDisabledAdd] = useState(false)
 
 	const sections = !_isEmpty(dashboard.sections) && dashboard.sections || []
 
-	const handleCreateBoard = () => (
-		setProcess([...process, createSection]),
-		dispatch(createSection())
-			.then(({ payload }) => context.addingItem = payload.entity_id)
+	useEffect(() => {
+		context.handleSaveBoard = handleSaveBoard
+		context.handleRemoveBoard = handleRemoveBoard
+		context.handleUpdateBoard = handleUpdateBoard
+	}, [])
+
+	const handleCreateBoard = () => {
+		const entity_id = uuid()
+
+		setDisabledAdd(true)
+		setInitializedItem(entity_id)
+		dispatch({
+			type: INIT_SECTION,
+			payload: { entity_id }
+		})
+	}
+
+	const handleSaveBoard = payload => (
+		dispatch(createSection(payload))
+			.then(() => (
+				setInitializedItem(undefined),
+				setDisabledAdd(false)
+			))
 			.catch(console.error)
-			.finally(() => setProcess(_without(process, createSection)))
 	)
+
+	const handleUpdateBoard = payload => (
+		dispatch(updateSection(payload))
+			.then()
+			.catch(console.error)
+	)
+
+	const handleRemoveBoard = payload => (
+		isInitializedItem(payload) && (
+			setInitializedItem(undefined),
+			setDisabledAdd(false),
+			dispatch({
+				type: REMOVE_SECTION,
+				payload
+			})
+		)||
+		dispatch(removeSection(payload))
+			.then(() => setDisabledAdd(false))
+			.catch(console.error)
+	)
+
+	const setInitializedItem = payload => context.initializedItem = payload
+	const isInitializedItem = payload => context.initializedItem === payload.entity_id
 
 	return (
 		<Flex pt="1rem" pl="2rem" flex="none" sx={{ minWidth: '100%' }}>
 			{sections.map(item =>
 				<Board key={item.entity_id} item={item} sx={{ mr: '2rem' }}/>
 			)}
-			{process.includes(createSection) && <BoardSkeleton sx={{ mr: '2rem' }} />}
-			<Button onClick={handleCreateBoard} disabled={process.includes(createSection)} styles={themeContext.button.styles.accent} sx={{ width: '15rem', height: '3rem' }}>Add Board +</Button>
+			<Button onClick={handleCreateBoard} disabled={disabledAdd} styles={themeContext.button.styles.accent} sx={{ width: '15rem', height: '3rem' }}>Add Board +</Button>
 		</Flex>
 	)
 }
