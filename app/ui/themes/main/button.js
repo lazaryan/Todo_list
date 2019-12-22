@@ -1,4 +1,5 @@
 import { css } from 'styled-components'
+import { transition } from './mixin'
 import colors from './colors'
 
 export const button = css`
@@ -13,6 +14,9 @@ export const button = css`
 	cursor: pointer;
 	height: 2rem;
 	font-size: 1.1rem;
+	outline: none;
+
+	${transition}
 
 	&:hover, &:focus {
 		opacity: .8;

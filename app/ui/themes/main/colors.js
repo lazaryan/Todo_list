@@ -10,6 +10,7 @@ export default {
 		blue: '#56C9EB'
 	},
 	color: {
-		main: '#222'
+		main: '#222',
+		light: '#999'
 	}
 }

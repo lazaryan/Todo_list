@@ -14,7 +14,7 @@ export const label = css`
 
 export const placeholder = css`
 	${defaultStyle}
-	color: #999;
+	color: ${colors.color.light};
 	text-transform: uppercase;
 	font-weight: 500;
 	text-align: center;

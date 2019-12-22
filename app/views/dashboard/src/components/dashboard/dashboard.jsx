@@ -23,7 +23,7 @@ export const Component = props => {
 
 	const sections = !_isEmpty(dashboard.sections) && dashboard.sections || []
 
-	const handleCreateBoard = e => (
+	const handleCreateBoard = () => (
 		setProcess([...process, createSection]),
 		dispatch(createSection())
 			.then(({ payload }) => context.addingItem = payload.entity_id)

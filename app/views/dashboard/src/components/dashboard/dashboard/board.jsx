@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import { isEmpty as _isEmpty, without as _without } from 'lodash'
 
-import { Flex } from 'reflexbox'
-import { Text, Input, Button, Loader, Skeleton as UISkeleton } from 'ui'
+import { Flex, Box } from 'reflexbox'
+import { Text, Input, Button, Loader, Dropdown, Icon, Skeleton as UISkeleton } from 'ui'
 
 import { removeSection, updateSection } from '../../../actions/dashboard'
 
@@ -36,21 +36,14 @@ export const Component = props => {
 	}
 
 	const handleBlurName = value => (
-		setProcess([...process, updateSection]),
-		value && (
+		value && props.item.name != value && (
+			setProcess([...process, updateSection]),
 			dispatch(updateSection({ entity_id: state.entity_id, name: value }))
 				.then(() => setProcess(_without(process, updateSection)))
 				.catch(console.error)
 		),
 		!value && (
-			isNewBoard && (
-				dispatch(removeSection(state))
-					.then()
-					.catch(console.error)
-			) || (
-				setProcess(_without(process, updateSection)),
-				handleUpdateState('name', props.item.name)
-			)
+			isNewBoard && removeBoard() || handleUpdateState('name', props.item.name)
 		),
 		isNewBoard && (
 			context.addingItem = undefined,
@@ -58,15 +51,33 @@ export const Component = props => {
 		)
 	)
 
+	const removeBoard = () => (
+		setProcess([...process, updateSection]),
+		dispatch(removeSection(state))
+			.then()
+			.catch(console.error)
+	)
+
+	const handleRemoveBoard = () => confirm('Are you sure ?') && removeBoard()
+
 	return (
 		<Flex sx={props.sx}>
-			<Flex height="max-content" flexDirection="column" sx={{ borderTopLeftRadius: '10px', borderTopRightRadius: '10px', boxShadow: `2px 0 15px ${themeContext.colors.default.border.main}`, overflow: 'hidden' }}>
-				<Flex px="1.2rem" height="5rem">
-					<Input value={state.name} onChange={value => handleUpdateState('name', value)} onBlur={handleBlurName} focus={isNewBoard} sx={{ width: '18rem' }} />
+			<Flex height="max-content" flexDirection="column" sx={{ borderRadius: '10px 10px 0 0', boxShadow: `2px 0 15px ${themeContext.colors.default.border.main}`, overflow: 'hidden' }}>
+				<Flex px="1.2rem" height="5rem" alignItems="center">
+					<Flex mr="1rem">
+						<Input value={state.name} onChange={value => handleUpdateState('name', value)} onBlur={handleBlurName} focus={isNewBoard} sx={{ width: '18rem' }} />
+					</Flex>
+					<Dropdown toggle={
+						<Flex height="2rem" width="2rem" p=".2rem"  sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, borderRadius: '5px', cursor: 'pointer' }} >
+							<Icon background={themeContext.mixin.icons.burger.main} sx={{ height: '1.6rem' }} />
+						</Flex>
+					}>
+						<Dropdown.Button onClick={handleRemoveBoard} sx={{ color: '#CC0000' }}>Remove</Dropdown.Button>
+					</Dropdown>
 				</Flex>
 				<Loader active={process.includes(updateSection)} />
 				<Flex flexDirection="column" alignItems="center" pt="1rem">
-					<Text>task list</Text>
+					<Text styles={themeContext.text.styles.placeholder} >task list is empty</Text>
 					<Flex width={[1]} pt="1rem" pb=".5rem" justifyContent="center">
 						<Button styles={themeContext.button.styles.accent} sx={{ fontSize: '.8rem', width: '80%' }}>Add task +</Button>
 					</Flex>
@@ -81,17 +92,22 @@ export const Skeleton = props => {
 
 	return (
 		<Flex sx={props.sx}>
-			<Flex height="max-content" flexDirection="column" sx={{ borderTopLeftRadius: '10px', borderTopRightRadius: '10px', boxShadow: `2px 0 15px ${themeContext.colors.default.border.main}`, overflow: 'hidden' }}>
-				<Flex px="1.2rem" height="5rem">
-					<UISkeleton width="18rem" height="3rem" sx={{ alignSelf: 'center' }} />
+			<Flex height="max-content" flexDirection="column" sx={{ borderRadius: '10px 10px 0 0', boxShadow: `2px 0 15px ${themeContext.colors.default.border.main}`, overflow: 'hidden' }}>
+				<Flex px="1.2rem" height="5rem" alignItems="center">
+					<Flex mr="1rem">
+						<UISkeleton width="18rem" height="3rem" sx={{ alignSelf: 'center' }} />
+					</Flex>
+					<Flex>
+						<UISkeleton width="2rem" height="2rem" />
+					</Flex>
 				</Flex>
 				<Loader />
 				<Flex flexDirection="column" alignItems="center" pt="1rem">
 					{[...Array(props.count || 2)].map((item, index) =>
-						<UISkeleton key={index} width="18rem" height="4rem" mb=".5rem" />
+						<UISkeleton key={index} width="90%" height="4rem" mb=".5rem" />
 					)}
-					<Flex pt="1rem" pb=".5rem" justifyContent="center">
-						<UISkeleton width="12rem" height="3rem" />
+					<Flex width={[1]} pt="1rem" pb=".5rem" justifyContent="center">
+						<UISkeleton width="80%" height="3rem" />
 					</Flex>
 				</Flex>
 			</Flex>

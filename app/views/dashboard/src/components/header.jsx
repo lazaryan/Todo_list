@@ -45,7 +45,7 @@ export const Component = props => {
 			<Flex alignItems="center">
 				{app.user && <Text sx={{ mr: '2rem' }}>{app.user.name}</Text>}
 				<Box height="3rem" sx={{ overflow: 'hidden', borderRadius: '50%', cursor: 'pointer', border: `1px solid ${themeContext.colors.default.border.main}` }}>
-					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account} sx={{ backgroundPosition: '0 8px' }} />
+					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account.main} sx={{ backgroundPosition: '0 8px' }} />
 				</Box>
 			</Flex>
 		</Flex>

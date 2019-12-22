@@ -72,7 +72,7 @@ const App = props => {
 		<ThemeProvider theme={theme}>
 			{!initialised && <Skeleton /> ||
 			<Flex width="100%" flexDirection="column">
-				<Box width={[1]} height="80px" bg={theme.colors.default.bg.dark} p="1.2rem 1rem">
+				<Box width={[1]} height="80px" bg={theme.colors.default.bg.dark} p="1.2rem 2rem">
 					<Suspense fallback={<HeaderSkeleton />}>
 						<Header />
 					</Suspense>
