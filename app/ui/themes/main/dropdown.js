@@ -25,9 +25,12 @@ export const dropdown = css`
 
 export const button = css`
 	background-color: ${colors.bg.main};
-	color: ${colors.color.main};
+	color: ${colors.color.light};
+	font-weight: 500;
 	border-radius: 0;
 	border-bottom: 2px solid ${colors.border.main};
+	width: max-content;
+	min-width: 100%!important;
 
 	&:hover, &:focus {
 		opacity: 1;

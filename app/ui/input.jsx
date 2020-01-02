@@ -17,23 +17,26 @@ export const Component = props => {
 
 	useEffect(() => {
 		props.focus && inputRef.current.focus()
-	}, [props.focus])
+	}, [])
 
 	useEffect(() => {
 		setValue(props.value)
 	}, [props.value])
 
-	const onChange = event => !props.disabled && (
+	const onChange = event => (
 		event.persist(),
 		(value => (setValue(value), props.onChange && props.onChange(value)))(validation('onChange')(event.target.value))
 	)
 
-	const onBlur = event => !props.disabled && (
+	const onBlur = event => (
 		event.persist(),
 		(value => (setValue(value), props.onBlur && props.onBlur(value)))(validation('onBlur')(event.target.value))
 	)
 
-	const onKeyPress = event => props.keyPress && (process => process && process(value))(({...props.keyPress})[event.key])
+	const onKeyUp = event => (process => process && process())(({
+		'Enter': () => (inputRef.current.blur(), props.onKeyEnter && props.onKeyEnter()),
+		'Escape': () => (inputRef.current.blur(), props.onKeyEscape && props.onKeyEscape()),
+	})[event.key])
 
 	const validation = type => value => (validator => validator ? validator(value) : value)(({
 		onChange: {
@@ -46,7 +49,7 @@ export const Component = props => {
 
 	return (
 		<Container sx={props.sx}>
-			<Input type={metaType} value={value} onChange={onChange} onBlur={onBlur} onKeyPress={onKeyPress} ref={inputRef} placeholder={props.placeholder}/>
+			<Input type={metaType} value={value} disabled={props.disabled} onChange={onChange} onBlur={onBlur} onKeyUp={onKeyUp} ref={inputRef} placeholder={props.placeholder}/>
 		</Container>
 	)
 }

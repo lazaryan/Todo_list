@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { isEmpty as _isEmpty, without as _without } from 'lodash'
+import { isEmpty as _isEmpty, without as _without, filter as _filter } from 'lodash'
 import { ThemeContext } from 'styled-components'
 import uuid from 'uuid'
 
@@ -24,9 +24,12 @@ export const Component = props => {
 
 	const [disabledAdd, setDisabledAdd] = useState(false)
 
-	const sections = !_isEmpty(dashboard.sections) && dashboard.sections || []
+	const sections = !_isEmpty(dashboard.sections) &&
+		_filter(dashboard.sections, section => !section.hide) || []
 
 	useEffect(() => {
+		_isEmpty(sections) && handleCreateBoard()
+		
 		context.handleSaveBoard = handleSaveBoard
 		context.handleRemoveBoard = handleRemoveBoard
 		context.handleUpdateBoard = handleUpdateBoard

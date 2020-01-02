@@ -30,6 +30,11 @@ export const Component = props => {
 			[field]: value
 		}))
 
+	const handleSaveName = value => value && (
+		handleSendUpdate('name', value),
+		setInitialUpdateName(false)
+	)
+
 	return (
 		<Flex justifyContent="space-between" alignItems="center" height="100%">
 			<Flex>
@@ -39,13 +44,13 @@ export const Component = props => {
 					<Flex px="1rem" alignItems="center" sx={{ border: `1px solid ${themeContext.colors.default.border.main}`, cursor: !disabledUpdate ? 'pointer' : 'default' }}>
 						<Text onClick={() => !disabledUpdate && setInitialUpdateName(true)} styles={themeContext.text.styles.label} sx={{ lineHeight: '1.6rem' }}>{dashboard.name || 'dashboard name'}</Text>
 					</Flex> ||
-					<Input value={dashboard.name} onChange={value => handleUpdate('name', value)} onBlur={value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))} focus={true} keyPress={{'Enter': value => value && (handleSendUpdate('name', value), setInitialUpdateName(false))}} placeholder="write dashboard name..." styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
+					<Input value={dashboard.name} onChange={value => handleUpdate('name', value)} onBlur={handleSaveName} onKeyEnter={handleSaveName} focus={true} placeholder="write dashboard name..." styles={themeContext.input.styles.accent} sx={{ width: '20rem' }} />
 				}
 			</Flex>
 			<Flex alignItems="center">
 				{app.user && <Text sx={{ mr: '2rem' }}>{app.user.name}</Text>}
-				<Box height="3rem" sx={{ overflow: 'hidden', borderRadius: '50%', cursor: 'pointer', border: `1px solid ${themeContext.colors.default.border.main}` }}>
-					<Icon height="100%" background={app.user.photo || themeContext.mixin.icons.account.main} sx={{ backgroundPosition: '0 8px' }} />
+				<Box sx={{ overflow: 'hidden', borderRadius: '50%', cursor: 'pointer', border: `1px solid ${themeContext.colors.default.border.main}` }}>
+					<Icon width="3rem" height="3rem" background={app.user.photo || themeContext.mixin.icons.account.main} sx={{ backgroundPosition: '0 8px' }} />
 				</Box>
 			</Flex>
 		</Flex>

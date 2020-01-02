@@ -1,6 +1,9 @@
 import { css } from 'styled-components'
+
 import { transition } from './mixin'
 import colors from './colors'
+import iconStyle from './icon'
+import { icons } from './mixin'
 
 export const button = css`
 	align-items: center;
@@ -21,6 +24,24 @@ export const button = css`
 	&:hover, &:focus {
 		opacity: .8;
 	}
+
+	${props => props.background && css`
+		${iconStyle}
+	`}
+
+	${props => props.delete && css`
+		${iconStyle}
+		background: ${colors.bg.red} url(${icons.cross.white}) 0 0 / 40% no-repeat;
+		background-position: center center;
+		border-radius: 50%;
+	`}
+
+	${props => props.agree && css`
+		${iconStyle}
+		background: ${colors.bg.green} url(${icons.checkMark.white}) 0 0 / 60% no-repeat;
+		background-position: center center;
+		border-radius: 50%;
+	`}
 
 	${props => props.disabled && css`
 		cursor: not-allowed;
