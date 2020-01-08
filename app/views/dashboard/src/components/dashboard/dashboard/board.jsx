@@ -1,14 +1,16 @@
 import { useState, useContext, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
-import { isEmpty as _isEmpty, without as _without } from 'lodash'
+import { isEmpty as _isEmpty, without as _without, filter as _filter } from 'lodash'
 
 import { Flex, Box } from 'reflexbox'
-import { Text, Input, Button, Loader, Dropdown, Icon, Skeleton as UISkeleton } from 'ui'
+import { Text, Input, Button, Loader, Dropdown, Icon, Popup, Skeleton as UISkeleton } from 'ui'
+import { Transition } from 'theme'
 
 import { removeSection, updateSection } from '../../../actions/dashboard'
-
 import { REMOVE_SECTION } from '../../../actions/dashboard/types'
+
+import Edit from './edit'
 
 import Context from '../context'
 
@@ -18,19 +20,29 @@ export const Component = props => {
 	const themeContext = useContext(ThemeContext)
 	const context = useContext(Context)
 
+	const itemsDashboard = useSelector(state => state.dashboard.items)
+
 	const [state, setState] = useState(props.item || {})
+	const [items, setItems] = useState([])
 	const [isNewBoard, setIsNewBoard] = useState(context.initializedItem === state.entity_id)
 	const [process, setProcess] = useState([])
 
 	const [initialUpdateName, setInitialUpdateName] = useState()
+	const [initialAddTask, setInitialAddTask] = useState()
 
 	useEffect(() => {
 		isNewBoard && setInitialUpdateName(true)
 	}, [])
 
 	useEffect(() => {
+		setItems(getItems())
+	}, [itemsDashboard])
+
+	useEffect(() => {
 		setState(props.item)
 	}, [props.item])
+
+	const getItems = () => _filter(itemsDashboard, item => item.section_id == state.entity_id)
 
 	const handleUpdateState = (field, value) => {
 		setState({
@@ -115,20 +127,26 @@ export const Component = props => {
 								<Dropdown.Button onClick={handleRemoveBoard} sx={{ color: themeContext.colors.default.bg.red }}>Remove</Dropdown.Button>
 							</Dropdown> ||
 							<>
-								<Button onClick={handleUpdateName} agree sx={{ mr: '.5rem' }} />
-								<Button onClick={dontSaveUpdateName} delete />
+								<Button disabled={process.includes(updateSection)} onClick={handleUpdateName} agree sx={{ mr: '.5rem' }} />
+								<Button disabled={process.includes(updateSection)} onClick={dontSaveUpdateName} delete />
 							</>
 						}
 					</Flex>
 				</Flex>
 				<Loader active={process.includes(updateSection)} />
 				<Flex flexDirection="column" alignItems="center" pt="1rem">
-					<Text styles={themeContext.text.styles.placeholder} >task list is empty</Text>
+					{_isEmpty(items) && !initialAddTask &&
+						<Text styles={themeContext.text.styles.placeholder} >task list is empty</Text>
+					}
+					{initialAddTask && <UISkeleton height="3rem" width={[.9]} />}
 					<Flex width={[1]} pt="1rem" pb=".5rem" justifyContent="center">
-						<Button disabled={isNewBoard} styles={themeContext.button.styles.accent} sx={{ fontSize: '.8rem', width: '80%' }}>Add task +</Button>
+						<Button disabled={isNewBoard} onClick={() => setInitialAddTask(true)} styles={themeContext.button.styles.accent} sx={{ fontSize: '.8rem', width: '80%' }}>Add task +</Button>
 					</Flex>
 				</Flex>
 			</Flex>
+			<Transition in={initialAddTask} delay={200}>
+				<Edit onExit={() => setInitialAddTask(false)} create />
+			</Transition>
 		</Flex>
 	)
 }

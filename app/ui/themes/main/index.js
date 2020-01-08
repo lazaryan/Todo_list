@@ -7,6 +7,7 @@ export const icon = require('./icon')
 export const button = require('./button')
 export const loader = require('./loader')
 export const dropdown = require('./dropdown')
+export const popup = require('./popup')
 
 export const mixin = require('./mixin')
 export const colors = require('./colors')
@@ -22,6 +23,7 @@ export default {
 	button,
 	loader,
 	dropdown,
+	popup,
 	mixin,
 	colors,
 	Transition

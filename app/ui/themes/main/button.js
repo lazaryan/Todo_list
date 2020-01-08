@@ -58,9 +58,21 @@ export const accent = css`
 	background-color: ${colors.bg.blue};
 `
 
+export const unaccent = css`
+	${button}
+	background-color: #fff;
+	color: ${colors.color.main};
+	border: 1px solid ${colors.border.main};
+
+	&:disabled {
+		color: ${colors.color.light};
+	}
+`
+
 export const styles = {
 	default: button,
-	accent
+	accent,
+	unaccent
 }
 
 export default styles
