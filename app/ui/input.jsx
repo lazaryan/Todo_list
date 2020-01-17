@@ -6,7 +6,7 @@ import { Flex } from 'reflexbox'
 
 const context = {}
 
-export const Component = props => {
+export const Input = props => {
 	context.styles = props.styles || {}
 
 	const inputRef = useRef()
@@ -49,15 +49,15 @@ export const Component = props => {
 
 	return (
 		<Container sx={props.sx}>
-			<Input type={metaType} value={value} disabled={props.disabled} onChange={onChange} onBlur={onBlur} onKeyUp={onKeyUp} ref={inputRef} placeholder={props.placeholder}/>
+			<InputComponent type={metaType} value={value} disabled={props.disabled} onChange={onChange} onBlur={onBlur} onKeyUp={onKeyUp} ref={inputRef} placeholder={props.placeholder}/>
 		</Container>
 	)
 }
 
 const Container = styled(Flex)`${props => context.styles.container || props.theme.input.styles.default.container}`
-const Input = styled.input`${props => context.styles.input || props.theme.input.styles.default.input}`
+const InputComponent = styled.input`${props => context.styles.input || props.theme.input.styles.default.input}`
 
-Component.propTypes = {
+Input.propTypes = {
 	desabled: PropTypes.bool,
 	type: PropTypes.oneOf(['text', 'email', 'number', 'persentage']),
 	focus: PropTypes.bool,
@@ -65,7 +65,7 @@ Component.propTypes = {
 	placeholder: PropTypes.string
 }
 
-Component.defaultProps = {
+Input.defaultProps = {
 	value: '',
 	type: 'text',
 	focus: false,
@@ -73,4 +73,4 @@ Component.defaultProps = {
 	placeholder: ''
 }
 
-export default Component
+export default Input

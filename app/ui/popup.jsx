@@ -20,8 +20,11 @@ export const Component = props => {
 
 export const Overlay = styled(forwardRef((props, ref) => <Flex {...props} ref={ref} />))`${props => props.theme.popup.overlay}`
 export const Container = styled(Flex)`${props => props.theme.popup.container}`
+
 export const Header = styled(Flex)`${props => props.theme.popup.header}`
+export const Content = styled(Flex)`${props => props.theme.popup.content}`
 
 Component.Header = Header
+Component.Content = Content
 
 export default Component

@@ -11,6 +11,7 @@ import { removeSection, updateSection } from '../../../actions/dashboard'
 import { REMOVE_SECTION } from '../../../actions/dashboard/types'
 
 import Edit from './edit'
+import Item from './item'
 
 import Context from '../context'
 
@@ -135,17 +136,22 @@ export const Component = props => {
 				</Flex>
 				<Loader active={process.includes(updateSection)} />
 				<Flex flexDirection="column" alignItems="center" pt="1rem">
-					{_isEmpty(items) && !initialAddTask &&
-						<Text styles={themeContext.text.styles.placeholder} >task list is empty</Text>
+					{_isEmpty(items) && (
+						!initialAddTask &&
+							<Text styles={themeContext.text.styles.placeholder} >task list is empty</Text> ||
+							<UISkeleton height="3rem" width={[.9]} />
+					) ||
+						items.map(item =>
+							<Item key={item.entity_id} item={item} />
+						)
 					}
-					{initialAddTask && <UISkeleton height="3rem" width={[.9]} />}
 					<Flex width={[1]} pt="1rem" pb=".5rem" justifyContent="center">
 						<Button disabled={isNewBoard} onClick={() => setInitialAddTask(true)} styles={themeContext.button.styles.accent} sx={{ fontSize: '.8rem', width: '80%' }}>Add task +</Button>
 					</Flex>
 				</Flex>
 			</Flex>
 			<Transition in={initialAddTask} delay={200}>
-				<Edit onExit={() => setInitialAddTask(false)} create />
+				<Edit onExit={() => setInitialAddTask(false)} item={{section_id: state.entity_id}} create />
 			</Transition>
 		</Flex>
 	)

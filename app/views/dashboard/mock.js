@@ -16,7 +16,8 @@ module.exports = {
 				dashboard: '/dashboard',
 				theme: '/theme',
 				user: '/user',
-				sections: '/dashboard/sections'
+				sections: '/dashboard/sections',
+				tasks: '/dashboard/tasks'
 			},
 			theme: 'main'
 		}),
@@ -43,7 +44,11 @@ module.exports = {
 		})
 	},
 	post: {
-		'/dashboard/sections': req => req.body.section
+		'/dashboard/sections': req => req.body.section,
+		'/dashboard/tasks': req => ({
+			entity_id: uuid(),
+			...req.body.task
+		})
 	},
 	put: {
 		'/dashboard/:id': req => req.body.dashboard,

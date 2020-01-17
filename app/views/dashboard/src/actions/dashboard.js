@@ -6,7 +6,8 @@ import {
 	SET_SECTIONS,
 	CREATE_SECTION,
 	UPDATE_SECTION,
-	REMOVE_SECTION
+	REMOVE_SECTION,
+	CREATE_TASK
 } from './dashboard/types'
 
 export const setState = id =>
@@ -26,3 +27,6 @@ export const updateSection = payload =>
 
 export const removeSection = payload =>
 	(dispatch, getState) => new API().delete(`${getState().app.REST.sections}/${payload.entity_id}`, null, REMOVE_SECTION, dispatch)
+
+export const createTask = payload =>
+	(dispatch, getState) => new API().create(`${getState().app.REST.tasks}`, { task: payload }, CREATE_TASK, dispatch)

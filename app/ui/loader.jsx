@@ -3,21 +3,21 @@ import styled from 'styled-components'
 
 import { Flex } from 'reflexbox'
 
-export const Component = props => (
+export const Loader = props => (
 	<Container sx={props.sx}>
-		<Loader active={props.active} />
+		<LoaderLine active={props.active} />
 	</Container>
 )
 
-Component.propTypes = {
+Loader.propTypes = {
 	active: PropTypes.bool
 }
 
-Component.defaultProps = {
+Loader.defaultProps = {
 	active: false
 }
 
 export const Container = styled(Flex)`${props => props.theme.loader.default.container}`
-export const Loader = styled(Flex)`${props => props.theme.loader.default.loader}`
+export const LoaderLine = styled(Flex)`${props => props.theme.loader.default.loader}`
 
-export default Component
+export default Loader

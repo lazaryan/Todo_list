@@ -7,7 +7,8 @@ import {
 	INIT_SECTION,
 	CREATE_SECTION,
 	UPDATE_SECTION,
-	REMOVE_SECTION
+	REMOVE_SECTION,
+	CREATE_TASK
 } from '../actions/dashboard/types'
 
 const initialState = {
@@ -28,6 +29,7 @@ const reducres = {
 		sections: { $splice: [[_findIndex(sections, ['entity_id', payload.entity_id]), 1]] },
 		items: { $set: _filter(items, item => item.section_id != payload.entity_id) }
 	}),
+	[CREATE_TASK]: payload => ({ items: { $push: [payload] } }),
 }
 
 export default (state = initialState, action) =>

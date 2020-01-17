@@ -34,8 +34,13 @@ export const header = css`
 	height: 5rem;
 `
 
+export const content = css`
+	flex-direction: column;
+`
+
 export default {
 	overlay,
 	container,
-	header
+	header,
+	content
 }
