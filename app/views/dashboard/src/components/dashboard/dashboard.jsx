@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { isEmpty as _isEmpty, without as _without, filter as _filter } from 'lodash'
+import { isEmpty as _isEmpty, filter as _filter } from 'lodash'
 import { ThemeContext } from 'styled-components'
 import uuid from 'uuid'
 
-import { Flex, Box } from 'reflexbox'
-import { Text, Button, Skeleton as UISkeleton } from 'ui'
+import { Flex } from 'reflexbox'
+import { Button } from 'ui'
 import Board, { Skeleton as BoardSkeleton } from './dashboard/board'
 
 import { createSection, updateSection, removeSection } from '../../actions/dashboard'
@@ -35,48 +35,35 @@ export const Component = props => {
 		context.handleUpdateBoard = handleUpdateBoard
 	}, [])
 
-	const handleCreateBoard = () => {
-		const entity_id = uuid()
-
-		setDisabledAdd(true)
-		setInitializedItem(entity_id)
+	const handleCreateBoard = () => (
+		setDisabledAdd(true),
 		dispatch({
 			type: INIT_SECTION,
-			payload: { entity_id }
+			payload: { entity_id: uuid(), isNew: true }
 		})
-	}
-
-	const handleSaveBoard = payload => (
-		dispatch(createSection(payload))
-			.then(() => (
-				setInitializedItem(undefined),
-				setDisabledAdd(false)
-			))
-			.catch(console.error)
 	)
 
-	const handleUpdateBoard = payload => (
+	const handleSaveBoard = payload =>
+		dispatch(createSection({...payload, isNew: false}))
+			.then(() => (
+				payload.isNew && setDisabledAdd(false)
+			))
+			.catch(console.error)
+
+	const handleUpdateBoard = payload =>
 		dispatch(updateSection(payload))
 			.then()
 			.catch(console.error)
-	)
 
-	const handleRemoveBoard = payload => (
-		isInitializedItem(payload) && (
-			setInitializedItem(undefined),
-			setDisabledAdd(false),
-			dispatch({
-				type: REMOVE_SECTION,
-				payload
-			})
-		)||
-		dispatch(removeSection(payload))
-			.then(() => setDisabledAdd(false))
-			.catch(console.error)
-	)
-
-	const setInitializedItem = payload => context.initializedItem = payload
-	const isInitializedItem = payload => context.initializedItem === payload.entity_id
+	const handleRemoveBoard = payload =>
+		payload.isNew &&
+			(
+				setDisabledAdd(false),
+				dispatch({ type: REMOVE_SECTION, payload })
+			) ||
+			dispatch(removeSection(payload))
+				.then()
+				.catch(console.error)
 
 	return (
 		<Flex pt="1rem" pl="2rem" flex="none" sx={{ minWidth: '100%' }}>

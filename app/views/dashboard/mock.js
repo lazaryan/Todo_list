@@ -36,10 +36,10 @@ module.exports = {
 		}),
 		'/dashboard/sections/:id': req => ({
 			sections: [
-				/*{
+				{
 					entity_id: '1',
 					name: 'test board'
-				}*/
+				}
 			]
 		})
 	},
