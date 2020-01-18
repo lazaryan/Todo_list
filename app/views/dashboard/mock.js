@@ -17,7 +17,8 @@ module.exports = {
 				theme: '/theme',
 				user: '/user',
 				sections: '/dashboard/sections',
-				tasks: '/dashboard/tasks'
+				tasks: '/dashboard/tasks',
+				task: '/dashboard/task'
 			},
 			theme: 'main'
 		}),
@@ -55,6 +56,14 @@ module.exports = {
 					name: 'second task'
 				}
 			]
+		}),
+		'/dashboard/task/:section_id/:task_id': req => ({
+			[req.params.task_id]: {
+				entity_id: req.params.task_id,
+				section_id: req.params.section_id,
+				name: 'first task',
+				description: 'Lorem ipsum.'
+			}
 		})
 	},
 	post: {

@@ -62,11 +62,8 @@ export const Header = props => {
 
 	const handleDontSaveName = () =>
 		state.isNew ? context.handleRemoveBoard(state) : (
-				props.blockBoard(),
-				handleUpdate('name', initialName)
-					.then(() => setInitialUpdateName(false))
-					.catch(console.error)
-					.finally(() => props.blockBoard(false))
+				handleUpdate('name', initialName),
+				setInitialUpdateName(false)
 			)
 
 	const handleRemoveBoard = () => confirm('Are you sure ?') && (
@@ -97,7 +94,7 @@ export const Header = props => {
 			<Flex px="1.2rem" height="5rem" alignItems="center">
 				<Flex mr="1rem">
 					{!initialUpdateName &&
-						<Text onDoubleClick={() => setInitialUpdateName(true)} styles={themeContext.text.styles.label} sx={{ width: '18rem' }}>{state.name}</Text> ||
+						<Text onDoubleClick={() => setInitialUpdateName(true)} styles={themeContext.text.styles.label} style={{ width: '18rem' }} sx={{ cursor: 'pointer' }}>{state.name}</Text> ||
 						<Input value={state.name} onChange={value => handleUpdate('name', value)} focus={initialUpdateName} onKeyEnter={handleSave} onKeyEscape={handleDontSaveName} sx={{ width: '18rem' }} />
 					}
 				</Flex>

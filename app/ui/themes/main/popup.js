@@ -36,6 +36,7 @@ export const header = css`
 
 export const content = css`
 	flex-direction: column;
+	padding: 1rem 1rem;
 `
 
 export default {

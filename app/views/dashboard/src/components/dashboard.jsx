@@ -23,13 +23,13 @@ export const Component = props => {
 	const [process, setProcess] = useState([setSections, setTasks])
 
 	useEffect(() => {
-		dispatch(setSections())
+		dispatch(setSections(dashboard.entity_id))
 			.then(() => (
 				setProcess([..._pull(process, setSections)])
 			))
 			.catch(console.error)
 
-		dispatch(setTasks())
+		dispatch(setTasks(dashboard.entity_id))
 			.then(() => (
 				setProcess([..._pull(process, setTasks)])
 			))

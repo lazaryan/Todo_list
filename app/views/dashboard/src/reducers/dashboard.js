@@ -9,7 +9,8 @@ import {
 	UPDATE_SECTION,
 	REMOVE_SECTION,
 	SET_TASKS,
-	CREATE_TASK
+	CREATE_TASK,
+	UPDATE_TASK
 } from '../actions/dashboard/types'
 
 const initialState = {
@@ -32,6 +33,7 @@ const reducres = {
 	}),
 	[SET_TASKS]: payload => ({ items: { $set: payload. tasks } }),
 	[CREATE_TASK]: payload => ({ items: { $push: [payload] } }),
+	[UPDATE_TASK]: (payload, { items }) => ({ items: {[_findIndex(items, ['entity_id', payload.entity_id])]: { $merge: payload }  } }),
 }
 
 export default (state = initialState, action) =>

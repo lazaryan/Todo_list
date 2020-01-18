@@ -20,9 +20,12 @@ export const Component = props => {
 	const [items, setItems] = useState([])
 
 	const [initialAddTask, setInitialAddTask] = useState()
+	const [initialEditor, setInitialEditor] = useState()
 	const [isBlocked, setIsBlocked] = useState(false)
+	const [editTask, setEditTask] = useState({})
 
 	const blockBoard = state => setIsBlocked(state != undefined ? state : true)
+	const setEditItem = payload => setEditTask(payload)
 
 	useState(() => {
 		state.isNew && blockBoard()
@@ -38,6 +41,22 @@ export const Component = props => {
 
 	const getItems = () => _filter(itemsDashboard, item => item.section_id == state.entity_id)
 
+	const initNewTask = () => (
+		setEditItem({section_id: state.entity_id}),
+		setInitialAddTask(true),
+		setInitialEditor(true)
+	)
+
+	const closeEditor = () => (
+		setInitialAddTask(false),
+		setInitialEditor(false)
+	)
+
+	const selectEditTask = payload => (
+		setEditItem(payload),
+		setInitialEditor(true)
+	)
+
 	return (
 		<Flex sx={props.sx}>
 			<Flex height="max-content" flexDirection="column" sx={{ borderRadius: '10px 10px 0 0', boxShadow: `2px 0 15px ${themeContext.colors.default.border.main}`, overflow: 'hidden' }}>
@@ -48,17 +67,17 @@ export const Component = props => {
 							<Text styles={themeContext.text.styles.placeholder} >task list is empty</Text>
 					) ||
 						items.map(item =>
-							<Item key={item.entity_id} item={item} />
+							<Item key={item.entity_id} item={item} onSelect={selectEditTask} />
 						)
 					}
 					{initialAddTask && <ItemSkeleton /> }
 					<Flex width={[1]} pt="1rem" pb=".5rem" justifyContent="center">
-						<Button disabled={isBlocked || initialAddTask} onClick={() => setInitialAddTask(true)} styles={themeContext.button.styles.accent} sx={{ fontSize: '.8rem', width: '80%' }}>Add task +</Button>
+						<Button disabled={isBlocked || initialAddTask} onClick={initNewTask} styles={themeContext.button.styles.accent} sx={{ fontSize: '.8rem', width: '80%' }}>Add task +</Button>
 					</Flex>
 				</Flex>
 			</Flex>
-			<Transition in={initialAddTask} delay={200}>
-				<Edit onExit={() => setInitialAddTask(false)} item={{section_id: state.entity_id}} create={initialAddTask} />
+			<Transition in={initialEditor} delay={200}>
+				<Edit onExit={closeEditor} item={editTask} create={initialAddTask} />
 			</Transition>
 		</Flex>
 	)

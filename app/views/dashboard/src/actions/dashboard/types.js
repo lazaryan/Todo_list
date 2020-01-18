@@ -10,3 +10,4 @@ export const REMOVE_SECTION     = 'DASHBOARD_REMOVE_SECTION'
 
 export const SET_TASKS          = 'DASHBOARD_SET_TASKS'
 export const CREATE_TASK        = 'DASHBOARD_CREATE_TASK'
+export const UPDATE_TASK        = 'DASHBOARD_UPDATE_TASK'
