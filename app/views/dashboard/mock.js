@@ -37,8 +37,22 @@ module.exports = {
 		'/dashboard/sections/:id': req => ({
 			sections: [
 				{
-					entity_id: '1',
+					entity_id: 1,
 					name: 'test board'
+				}
+			]
+		}),
+		'/dashboard/tasks/:id': req => ({
+			tasks: [
+				{
+					entity_id: 1,
+					section_id: 1,
+					name: 'first task'
+				},
+				{
+					entity_id: 2,
+					section_id: 1,
+					name: 'second task'
 				}
 			]
 		})

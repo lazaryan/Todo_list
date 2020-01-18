@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, Suspense, lazy } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { isEmpty as _isEmpty, last as _last, pull as _pull, values as _values } from 'lodash'
+import { last as _last, pull as _pull, values as _values } from 'lodash'
 import queryString from 'query-string'
 import axios from 'axios'
 

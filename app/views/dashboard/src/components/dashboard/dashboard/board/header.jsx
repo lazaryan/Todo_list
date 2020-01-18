@@ -46,25 +46,36 @@ export const Header = props => {
 					setProcess(_without(process, context.handleSaveBoard)),
 					setInitialUpdateName(false)
 				))
-		) ||
+				.catch(console.error)
+				.finally(() => props.blockBoard(false))
+		) || (
+			props.blockBoard(),
 			context.handleUpdateBoard(state)
 				.then(() => (
 					setProcess(_without(process, context.handleSaveBoard)),
 					setInitialUpdateName(false)
 				))
+				.catch(console.error)
+				.finally(() => props.blockBoard(false))
+		)
 	}
 
 	const handleDontSaveName = () =>
 		state.isNew ? context.handleRemoveBoard(state) : (
-				handleUpdate('name', initialName),
-				setInitialUpdateName(false)
+				props.blockBoard(),
+				handleUpdate('name', initialName)
+					.then(() => setInitialUpdateName(false))
+					.catch(console.error)
+					.finally(() => props.blockBoard(false))
 			)
 
 	const handleRemoveBoard = () => confirm('Are you sure ?') && (
+		props.blockBoard(),
 		setProcess([...process, context.handleRemoveBoard]),
 		context.handleRemoveBoard(state)
 			.then()
 			.catch(err => (
+				props.blockBoard(false),
 				setProcess(_without(process, context.handleRemoveBoard)),
 				console.error(err)
 			))
@@ -86,7 +97,7 @@ export const Header = props => {
 			<Flex px="1.2rem" height="5rem" alignItems="center">
 				<Flex mr="1rem">
 					{!initialUpdateName &&
-						<Text onDoubleClick={() => setInitialUpdateName(true)} sx={{ width: '18rem' }}>{state.name}</Text> ||
+						<Text onDoubleClick={() => setInitialUpdateName(true)} styles={themeContext.text.styles.label} sx={{ width: '18rem' }}>{state.name}</Text> ||
 						<Input value={state.name} onChange={value => handleUpdate('name', value)} focus={initialUpdateName} onKeyEnter={handleSave} onKeyEscape={handleDontSaveName} sx={{ width: '18rem' }} />
 					}
 				</Flex>
@@ -94,7 +105,7 @@ export const Header = props => {
 					{!initialUpdateName &&
 						<Dropdown toggle={
 							<Button background={themeContext.mixin.icons.burger.main} />
-						}>
+						} disabled={props.disabled}>
 							<Dropdown.Button onClick={() => setInitialUpdateName(true)}>Edit name</Dropdown.Button>
 							<Dropdown.Button onClick={handleHideBoard}>Hide</Dropdown.Button>
 							<Dropdown.Button onClick={handleRemoveBoard} sx={{ color: themeContext.colors.default.bg.red }}>Remove</Dropdown.Button>

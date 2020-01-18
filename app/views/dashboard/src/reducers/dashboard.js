@@ -8,6 +8,7 @@ import {
 	CREATE_SECTION,
 	UPDATE_SECTION,
 	REMOVE_SECTION,
+	SET_TASKS,
 	CREATE_TASK
 } from '../actions/dashboard/types'
 
@@ -29,6 +30,7 @@ const reducres = {
 		sections: { $splice: [[_findIndex(sections, ['entity_id', payload.entity_id]), 1]] },
 		items: { $set: _filter(items, item => item.section_id != payload.entity_id) }
 	}),
+	[SET_TASKS]: payload => ({ items: { $set: payload. tasks } }),
 	[CREATE_TASK]: payload => ({ items: { $push: [payload] } }),
 }
 

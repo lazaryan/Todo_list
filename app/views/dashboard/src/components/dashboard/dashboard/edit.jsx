@@ -1,8 +1,10 @@
 import { useContext, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { isEmpty as _isEmpty } from 'lodash'
+import { ThemeContext } from 'styled-components'
+
 import { Flex } from 'reflexbox'
 import { Popup, Button, Input, Loader } from 'ui'
-import { ThemeContext } from 'styled-components'
 
 import { createTask } from '../../../actions/dashboard'
 
@@ -12,6 +14,8 @@ export const Component = props => {
 
 	const [state, setState] = useState(props.item)
 	const [process, setProcess] = useState([])
+
+	const disabledSave = _isEmpty(state.name)
 
 	const handleClose = () => props.onExit && props.onExit()
 
@@ -34,13 +38,14 @@ export const Component = props => {
 				<Flex ml="3rem">
 					<Button sx={{ mr: '1rem' }} onClick={handleClose} styles={themeContext.button.styles.unaccent}>Close</Button>
 					{props.create && 
-						<Button onClick={handleCreate} styles={themeContext.button.styles.accent}>Create</Button> ||
+						<Button disabled={disabledSave} onClick={handleCreate} styles={themeContext.button.styles.accent}>Create</Button> ||
 						<Button styles={themeContext.button.styles.accent}>Done</Button>
 					}
 				</Flex>
 			</Popup.Header>
 			<Loader active={process.includes(createTask)} />
 			<Popup.Content>
+				Editor
 			</Popup.Content>
 		</Popup>
 	)

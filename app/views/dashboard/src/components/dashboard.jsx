@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { pull as _pull } from 'lodash'
 
 import { Flex } from 'reflexbox'
 import { Skeleton as UISkeleton } from 'ui'
 
-import { setSections, removeSection as actionRemoveSection } from '../actions/dashboard'
+import { setSections, removeSection as actionRemoveSection, setTasks } from '../actions/dashboard'
 
 import List, { Skeleton as ListSkeleton } from './dashboard/list'
 import Dashboard, { Skeleton as DashboardSkeleton } from './dashboard/dashboard'
@@ -18,16 +19,26 @@ export const Component = props => {
 
 	const dashboard = useSelector(state => state.dashboard)
 
-	const [initialised, setInitialised] = useState(false)
+	const [initialised, setInitialised] = useState()
+	const [process, setProcess] = useState([setSections, setTasks])
 
 	useEffect(() => {
 		dispatch(setSections())
 			.then(() => (
-				setInitialised(true)),
-				context.initialised = true
-			)
+				setProcess([..._pull(process, setSections)])
+			))
+			.catch(console.error)
+
+		dispatch(setTasks())
+			.then(() => (
+				setProcess([..._pull(process, setTasks)])
+			))
 			.catch(console.error)
 	}, [])
+
+	useEffect(() => {
+		!process.length && setInitialised(true)
+	}, [process])
 
 	return (
 		<Flex width={[1]} height="100%">
