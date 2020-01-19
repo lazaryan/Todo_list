@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, Suspense, lazy } from 'react'
 import { useSelector } from 'react-redux'
 import { ThemeContext } from 'styled-components'
 import { isEmpty as _isEmpty,  filter as _filter } from 'lodash'
@@ -8,8 +8,10 @@ import { Text, Button, Skeleton as UISkeleton } from 'ui'
 import { Transition } from 'theme'
 
 import Header, { Skeleton as HeaderSkeleton } from './board/header'
-import Edit from './edit'
 import Item, { Skeleton as ItemSkeleton } from './item'
+
+const Edit = lazy(() => import('./edit'))
+import { Skeleton as EditorSkeleton } from './edit'
 
 export const Component = props => {
 	const themeContext = useContext(ThemeContext)
@@ -77,7 +79,9 @@ export const Component = props => {
 				</Flex>
 			</Flex>
 			<Transition in={initialEditor} delay={200}>
-				<Edit onExit={closeEditor} item={editTask} create={initialAddTask} />
+				<Suspense fallback={<EditorSkeleton />}>
+					<Edit onExit={closeEditor} item={editTask} create={initialAddTask} />
+				</Suspense>
 			</Transition>
 		</Flex>
 	)

@@ -8,7 +8,7 @@ import { Popup, Button, Input, Loader, Skeleton as UISkeleton } from 'ui'
 
 import { createTask, updateTask } from '../../../actions/dashboard'
 import { getTask } from '../../../actions/dashboard/tasks'
-import { SET_TASK, UPDATE_SAVED_TASK, UPDATE_TASK, CLEAR_TASK } from '../../../actions/dashboard/tasks/types'
+import { SET_TASK, SAVE_TASK, UPDATE_TASK, CLEAR_TASK } from '../../../actions/dashboard/tasks/types'
 
 import Context from '../context'
 
@@ -48,7 +48,10 @@ export const Component = props => {
 	const handleCreate = () => (
 		setProcess([...process, createTask]),
 		dispatch(createTask(state))
-			.then(handleClose)
+			.then(({ payload }) => (
+				dispatch({ type: SAVE_TASK, payload: { [payload.entity_id]: payload } }),
+				handleClose()
+			))
 			.catch(console.error)
 	)
 
