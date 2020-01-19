@@ -9,8 +9,10 @@ import { Button } from 'ui'
 import Board, { Skeleton as BoardSkeleton } from './dashboard/board'
 
 import { createSection, updateSection, removeSection } from '../../actions/dashboard'
+import { updateTask } from '../../actions/dashboard'
 
 import { INIT_SECTION, REMOVE_SECTION } from '../../actions/dashboard/types'
+import { UPDATE_SAVED_TASK } from '../../actions/dashboard/tasks/types'
 
 import Context from './context'
 
@@ -33,6 +35,7 @@ export const Component = props => {
 		context.handleSaveBoard = handleSaveBoard
 		context.handleRemoveBoard = handleRemoveBoard
 		context.handleUpdateBoard = handleUpdateBoard
+		context.handleUpdateTask = handleUpdateTask
 	}, [])
 
 	const handleCreateBoard = () => (
@@ -52,7 +55,6 @@ export const Component = props => {
 
 	const handleUpdateBoard = payload =>
 		dispatch(updateSection(payload))
-			.then()
 			.catch(console.error)
 
 	const handleRemoveBoard = payload =>
@@ -62,8 +64,13 @@ export const Component = props => {
 				dispatch({ type: REMOVE_SECTION, payload })
 			) ||
 			dispatch(removeSection(payload))
-				.then()
 				.catch(console.error)
+
+	const handleUpdateTask = payload => (
+		dispatch({ type: UPDATE_SAVED_TASK, payload }),
+		dispatch(updateTask(payload))
+			.catch(console.error)
+	)
 
 	return (
 		<Flex pt="1rem" pl="2rem" flex="none" sx={{ minWidth: '100%' }}>

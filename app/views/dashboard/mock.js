@@ -48,12 +48,7 @@ module.exports = {
 				{
 					entity_id: 1,
 					section_id: 1,
-					name: 'first task'
-				},
-				{
-					entity_id: 2,
-					section_id: 1,
-					name: 'second task'
+					name: 'task'
 				}
 			]
 		}),
@@ -61,7 +56,7 @@ module.exports = {
 			[req.params.task_id]: {
 				entity_id: req.params.task_id,
 				section_id: req.params.section_id,
-				name: 'first task',
+				name: 'task',
 				description: 'Lorem ipsum.'
 			}
 		})
@@ -75,7 +70,8 @@ module.exports = {
 	},
 	put: {
 		'/dashboard/:id': req => req.body.dashboard,
-		'/dashboard/sections/:id': req => req.body.section
+		'/dashboard/sections/:id': req => req.body.section,
+		'/dashboard/tasks/:id': req => req.body.task,
 	},
 	delete: {
 		'/dashboard/sections/:id': req => ({ entity_id: req.params.id })

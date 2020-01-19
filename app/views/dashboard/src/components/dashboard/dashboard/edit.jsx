@@ -1,17 +1,21 @@
 import { useContext, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { isEmpty as _isEmpty, values as _values } from 'lodash'
+import { isEmpty as _isEmpty, values as _values, without as _without } from 'lodash'
 import { ThemeContext } from 'styled-components'
 
 import { Flex } from 'reflexbox'
 import { Popup, Button, Input, Loader, Skeleton as UISkeleton } from 'ui'
 
-import { createTask } from '../../../actions/dashboard'
+import { createTask, updateTask } from '../../../actions/dashboard'
 import { getTask } from '../../../actions/dashboard/tasks'
-import { SET_TASK, UPDATE_TASK, CLEAR_TASK } from '../../../actions/dashboard/tasks/types'
+import { SET_TASK, UPDATE_SAVED_TASK, UPDATE_TASK, CLEAR_TASK } from '../../../actions/dashboard/tasks/types'
+
+import Context from '../context'
 
 export const Component = props => {
 	const themeContext = useContext(ThemeContext)
+	const context = useContext(Context)
+
 	const dispatch = useDispatch()
 
 	const savedTasks = useSelector(state => state.tasks.tasks)
@@ -33,7 +37,9 @@ export const Component = props => {
 		return () => dispatch({ type: CLEAR_TASK })
 	}, [])
 
-	const disabledSave = _isEmpty(state.name)
+	const disabledAll = process.includes(updateTask) || process.includes(createTask)
+	const disabledSave = _isEmpty(state.name) || disabledAll
+	const disabledDone = _isEmpty(state.name) || disabledAll
 
 	const handleClose = () => props.onExit && props.onExit()
 
@@ -46,21 +52,26 @@ export const Component = props => {
 			.catch(console.error)
 	)
 
-	const handleSave = () => {}
+	const handleSave = () => (
+		setProcess([...process, updateTask]),
+		context.handleUpdateTask(state)
+			.then(handleClose)
+			.finally(() => setProcess(_without(process, updateTask)))
+	)
 
 	return (
 		_isEmpty(state) && <Skeleton onExit={handleClose} /> || <Popup>
 			<Popup.Header justifyContent="space-between">
-				<Input placeholder="Write task name..." value={state.name} onChange={value => handleUpdate('name', value)} styles={themeContext.input.styles.accent} sx={{ width: '80%' }} />
+				<Input disabled={disabledAll} placeholder="Write task name..." value={state.name} onChange={value => handleUpdate('name', value)} styles={themeContext.input.styles.accent} sx={{ width: '80%' }} />
 				<Flex ml="3rem">
 					<Button sx={{ mr: '1rem' }} onClick={handleClose} styles={themeContext.button.styles.unaccent}>Close</Button>
 					{props.create && 
 						<Button disabled={disabledSave} onClick={handleCreate} styles={themeContext.button.styles.accent}>Create</Button> ||
-						<Button onClick={handleSave} styles={themeContext.button.styles.accent}>Done</Button>
+						<Button disabled={disabledDone} onClick={handleSave} styles={themeContext.button.styles.accent}>Done</Button>
 					}
 				</Flex>
 			</Popup.Header>
-			<Loader active={process.includes(createTask)} />
+			<Loader active={process.includes(createTask) || process.includes(updateTask)} />
 			<Popup.Content alignItems="center">
 				Editor
 			</Popup.Content>

@@ -8,7 +8,8 @@ import {
 	UPDATE_SECTION,
 	REMOVE_SECTION,
 	SET_TASKS,
-	CREATE_TASK
+	CREATE_TASK,
+	UPDATE_TASK
 } from './dashboard/types'
 
 export const setState = id =>
@@ -34,3 +35,6 @@ export const setTasks = id =>
 
 export const createTask = payload =>
 	(dispatch, getState) => new API().create(`${getState().app.REST.tasks}`, { task: payload }, CREATE_TASK, dispatch)
+
+export const updateTask = payload =>
+	(dispatch, getState) => new API().update(`${getState().app.REST.tasks}/${payload.entity_id}`, { task: payload }, UPDATE_TASK, dispatch)

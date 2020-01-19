@@ -26,14 +26,14 @@ const reducres = {
 	[SET_SECTIONS]: payload => ({ sections: { $set: payload.sections } }),
 	[INIT_SECTION]: payload => ({ sections: { $push: [payload] } }),
 	[CREATE_SECTION]: (payload, { sections }) => ({ sections: { [sections.length - 1]: { $merge: payload } } }),
-	[UPDATE_SECTION]: (payload, { sections }) => ({ sections: { [_findIndex(sections, ['entity_id', payload.entity_id])]: { $merge: payload } } }),
+	[UPDATE_SECTION]: (payload, { sections }) => ({ sections: { [_findIndex(sections, section => section.entity_id == payload.entity_id)]: { $merge: payload } } }),
 	[REMOVE_SECTION]: (payload, { sections, items }) => ({
-		sections: { $splice: [[_findIndex(sections, ['entity_id', payload.entity_id]), 1]] },
+		sections: { $splice: [[_findIndex(sections, section => section.entity_id == payload.entity_id), 1]] },
 		items: { $set: _filter(items, item => item.section_id != payload.entity_id) }
 	}),
 	[SET_TASKS]: payload => ({ items: { $set: payload. tasks } }),
 	[CREATE_TASK]: payload => ({ items: { $push: [payload] } }),
-	[UPDATE_TASK]: (payload, { items }) => ({ items: {[_findIndex(items, ['entity_id', payload.entity_id])]: { $merge: payload }  } }),
+	[UPDATE_TASK]: (payload, { items }) => ({ items: {[_findIndex(items, item => item.entity_id == payload.entity_id)]: { $merge: payload }  } }),
 }
 
 export default (state = initialState, action) =>

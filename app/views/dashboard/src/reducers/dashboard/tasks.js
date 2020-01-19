@@ -1,4 +1,5 @@
 import update from 'immutability-helper'
+import { findIndex as _findIndex } from 'lodash'
 import {
 	SAVE_TASK,
 	UPDATE_SAVED_TASK,
@@ -14,7 +15,7 @@ export const initialState = {
 
 const reducres = {
 	[SAVE_TASK]: payload => ({ tasks: { $merge: payload } }),
-	[UPDATE_SAVED_TASK]: payload => ({ tasks: { [payload.entity_id]: { $merge: payload } } }),
+	[UPDATE_SAVED_TASK]: (payload, { tasks }) => ~_findIndex(tasks, task => task.entity_id == payload.entity_id) && { tasks: { [payload.entity_id]: { $merge: payload } } } || {},
 	[SET_TASK]: payload => ({ editTask: { $set: payload } }),
 	[UPDATE_TASK]: payload => ({ editTask: { $merge: payload } }),
 	[CLEAR_TASK]: payload => ({ editTask: { $set: {} } })
