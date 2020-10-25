@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Flex } from 'reflexbox'
 import { Skeleton as UISkeleton } from 'ui'
 
-import { getDashboards, createDashboard } from '../../actions/main'
+import { getDashboards, createDashboard, deleteDashboard } from '../../actions/main'
 import { Store, Dashboard } from '../../reducers/main'
 
 import { Container, Text, Button } from 'ui'
@@ -36,6 +36,13 @@ export const Component = () => {
             .catch(console.error)
     }
 
+    const closeDashboard = (dashboardId: string) => (
+        confirm('Вы уверены?') && (
+            dispatch(deleteDashboard(dashboardId))
+                .then(console.log)
+        )
+    )
+
     console.log(state)
 
     return (
@@ -51,7 +58,8 @@ export const Component = () => {
                     <Container.Tile sx={{justifyContent: 'center', flexDirection: 'column' }}>
                         <Text styles={theme.text.styles.header} sx={{ mb: '1.5rem' }}>{ dashboard.name || 'Доска без названия' }</Text>
                         <Flex>
-                            <Button onClick={() => showDashboard(dashboard.dashboard_id)}>Перейти</Button>
+                            <Button onClick={() => showDashboard(dashboard.dashboard_id)} sx={{ mr: '2rem' }}>Перейти</Button>
+                            <Button onClick={() => closeDashboard(dashboard.dashboard_id)} styles={theme.button.styles.close}>Закрыть доску</Button>
                         </Flex>
                     </Container.Tile>
                 </Container>

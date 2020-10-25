@@ -60,3 +60,31 @@ module.exports.createDashboard = ({ req, res }) => {
         })
     }
 }
+
+module.exports.updateDashboardName = async ({ req, res }) => {
+    const isAuthenticated = req.isAuthenticated()
+
+    if (!isAuthenticated) {
+        res.send('')
+    } else {
+        await Dashboard.updateOne({ user_id: req.user.entity_id, entity_id: req.params.id }, { name: req.body.name || '' })
+
+        res.send('Ok')
+    }
+}
+
+module.exports.deleteDashboard = async ({ req, res }) => {
+    const isAuthenticated = req.isAuthenticated()
+
+    if (!isAuthenticated) {
+        res.send('')
+    } else {
+        Dashboard.deleteOne({ user_id: req.user.entity_id, entity_id: req.params.id }, (err) => {
+            if (err) {
+                return res.send('')
+            } else {
+                return res.send(req.params.id)
+            }
+        })
+    }
+}

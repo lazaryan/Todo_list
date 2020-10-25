@@ -41,9 +41,19 @@ module.exports = [
         action: dashboard.getDashboard
     },
     {
+        path: '/api/dashboard/:id',
+        method: 'delete',
+        action: dashboard.deleteDashboard
+    },
+    {
         path: '/api/dashboard',
         method: 'post',
         action: dashboard.createDashboard
+    },
+    {
+        path: '/api/dashboard/:id/update/name',
+        method: 'put',
+        action: dashboard.updateDashboardName
     },
     {
         path: '/api/dashboard/:id/columns',

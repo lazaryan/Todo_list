@@ -4,10 +4,13 @@ import { useLocation, useHistory } from 'react-router-dom'
 
 import { Flex } from 'reflexbox'
 import theme from 'theme'
-import { Container, Button, Icon, Text, Input, Skeleton as UISkeleton } from 'ui'
+import { Container, Button, Icon, Text, Input, Dropdown, Skeleton as UISkeleton } from 'ui'
 
 import { Store as AppStore } from './reducers/app'
 import { Store as DashboardStore } from './reducers/dashboard'
+
+import { updateDashboardName } from './actions/dashboard'
+import { logout } from './actions/app'
 
 export const Component = () => {
     const dispatch = useDispatch()
@@ -18,10 +21,39 @@ export const Component = () => {
     const dashboardState: DashboardStore = useSelector((state) => state.dashboard)
 
     const [initialUpdateDashboardName, setInitialUpdateDashboardName]: [boolean, Function] = React.useState(false)
+    const [queryUpdateDashboardName, setQueryUpdateDashboardName]: [string, Function] = React.useState(dashboardState.dashboard?.name || '')
+    const [processUpdateDashboardName, setProcessUpdateDashboardName]: [boolean, Function] = React.useState(false)
 
     React.useEffect(() => {
         setInitialUpdateDashboardName(false)
     }, [location])
+
+    React.useEffect(() => {
+        setQueryUpdateDashboardName(dashboardState.dashboard?.name || '')
+    }, [dashboardState.dashboard])
+
+    const saveChangeDashboardName = () => {
+        setProcessUpdateDashboardName(true)
+
+        dispatch(updateDashboardName({ id: dashboardState.dashboard.dashboard_id, name: queryUpdateDashboardName }))
+            .catch(console.error)
+            .finally(() => {
+                setInitialUpdateDashboardName(false)
+                setProcessUpdateDashboardName(false)
+            })
+    }
+
+    const closeChangingDahboardName = () => {
+        setInitialUpdateDashboardName(false)
+        setQueryUpdateDashboardName('')
+    }
+
+    const handleLogout = () => {
+        dispatch(logout())
+            .then(() => {
+                window.location.pathname = '/login'
+            })
+    }
 
     console.log(dashboardState)
 
@@ -35,9 +67,19 @@ export const Component = () => {
                         {dashboardState.dashboard ?
                             initialUpdateDashboardName
                                 ? <Flex>
-                                    <Input placeholder="Введите имя.." sx={{ mr: '2rem', width: '20rem' }}/>
-                                    <Button styles={theme.button.styles.accent} sx={{ mr: '2rem' }}>Сохранить</Button>
-                                    <Button styles={theme.button.styles.close}>Закрыть</Button>
+                                    <Input placeholder="Введите имя.." sx={{ mr: '2rem', width: '20rem' }} value={queryUpdateDashboardName} onChange={(value: string) => setQueryUpdateDashboardName(value)}/>
+                                    <Button
+                                        onClick={saveChangeDashboardName}
+                                        styles={theme.button.styles.accent} sx={{ mr: '2rem' }}
+                                        disabled={processUpdateDashboardName}
+                                        isProcessing={processUpdateDashboardName}
+                                    >Сохранить</Button>
+                                    <Button
+                                        onClick={closeChangingDahboardName}
+                                        styles={theme.button.styles.close}
+                                        disabled={processUpdateDashboardName}
+                                        isProcessing={processUpdateDashboardName}
+                                    >Закрыть</Button>
                                 </Flex>
                                 : <Text onClick={() => setInitialUpdateDashboardName(true)} styles={theme.text.styles.box} sx={{ maxWidth: '20rem' }}>{ dashboardState.dashboard.name || 'Введите имя...' }</Text>
                         : <UISkeleton width="15rem" height="2rem" mr="1rem"/>}
@@ -46,7 +88,11 @@ export const Component = () => {
                 </Flex>
                 <Flex alignItems="center">
                     <Text styles={theme.text.styles.placeholder} sx={{ mr: '1rem' }}>{ appState?.user?.name ?? '' }</Text>
-                    <Icon background={theme.mixin.icons.blue.user} />
+                    <Dropdown toggle={
+                        <Icon background={theme.mixin.icons.blue.user} />
+                    }>
+                        <Dropdown.Button onClick={handleLogout}>Выйти</Dropdown.Button>
+                    </Dropdown>
                 </Flex>
             </Container.Header>
         </Container>

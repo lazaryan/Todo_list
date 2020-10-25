@@ -1,7 +1,8 @@
 import update from 'immutability-helper'
 import { Reducer } from './types'
 import {
-  GET_DASHBOARDS
+  GET_DASHBOARDS,
+  DELETE_DASHBOARD
 } from '../actions/main/types'
 
 export interface Dashboard {
@@ -19,6 +20,7 @@ export const initialState: Store = {
 
 export const reducers: Reducer<Store> = {
   [GET_DASHBOARDS]: (payload: Store) => ({ items: { $set: payload } }),
+  [DELETE_DASHBOARD]: (payload: string, state: Store) => ({ items: { $set: state.items.filter((item: Dashboard) => item.dashboard_id !== payload) } })
 }
 
 export default (state = initialState, action) =>
