@@ -55,6 +55,8 @@ export const Component = () => {
             })
     }
 
+    const handleRegister = () => window.location.pathname = '/register'
+
     console.log(dashboardState)
 
     return (
@@ -91,6 +93,7 @@ export const Component = () => {
                     <Dropdown toggle={
                         <Icon background={theme.mixin.icons.blue.user} />
                     }>
+                        <Dropdown.Button onClick={handleRegister}>Регистрация</Dropdown.Button>
                         <Dropdown.Button onClick={handleLogout}>Выйти</Dropdown.Button>
                     </Dropdown>
                 </Flex>

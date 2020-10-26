@@ -5,7 +5,7 @@ const user = require('./user')
 const dashboard = require('./dashboard')
 const column = require('./column')
 
-;[login, logout, register, user].forEach(fn =>
+;[login, logout, register, user, dashboard, column].forEach(fn =>
     module.exports[fn.name] = fn    
 )
 
@@ -59,5 +59,20 @@ module.exports = [
         path: '/api/dashboard/:id/columns',
         method: 'get',
         action: column.getColumns
+    },
+    {
+        path: '/api/dashboard/:id/columns',
+        method: 'post',
+        action: column.createColumn
+    },
+    {
+        path: '/api/dashboard/:id/columns/:column/update/name',
+        method: 'put',
+        action: column.updateColumnName
+    },
+    {
+        path: '/api/dashboard/:id/columns/:column/update/show',
+        method: 'put',
+        action: column.updateColumnShow
     },
 ]

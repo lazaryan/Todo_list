@@ -6,7 +6,8 @@ const columnSchema = mongoose.Schema({
         unique: true
     },
     dashboard_id: String,
-    name: String
+    name: String,
+    show: Boolean
 })
 
 module.exports = mongoose.model('Column', columnSchema)

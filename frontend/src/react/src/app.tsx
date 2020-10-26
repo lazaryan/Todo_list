@@ -17,7 +17,7 @@ const MainPage = React.lazy(() => debouncedImport(() => import('./pages/main')))
 const DashboardPage = React.lazy(() => debouncedImport(() => import('./pages/dashboard')))
 
 import { Skeleton as MainPageSkeleton } from './pages/main'
-import { Skeleton as DashboardSkeleton } from './pages/main'
+import { Skeleton as DashboardSkeleton } from './pages/dashboard'
 
 export const App = () => {
 	const dispatch = useDispatch()

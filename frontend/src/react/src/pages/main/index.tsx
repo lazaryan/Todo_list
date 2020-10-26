@@ -73,8 +73,9 @@ export const Component = () => {
 
 export const Skeleton = () => (
     <Flex width="100%" flexDirection="column">
-        <UISkeleton width="100%" height="20rem" mb="2rem" />
-        <UISkeleton width="100%" height="20rem" mb="2rem" />
+        <UISkeleton width="100%" height="5rem" mb="2rem" />
+        <UISkeleton width="100%" height="5rem" mb="2rem" />
+        <UISkeleton width="100%" height="5rem" mb="2rem" />
     </Flex>
 )
 
