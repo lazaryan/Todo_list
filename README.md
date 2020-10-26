@@ -1,4 +1,4 @@
-# "Ho is author ?"
+# Sample Todo List
 
 ## Using
 
