@@ -69,9 +69,13 @@ export const icons = {
         arrow_down: loadIcon(require('./icons/down-arrow.svg'), { color: '#999' }),
         arrow_top: loadIcon(require('./icons/arrow_top.svg'), { color: '#999' }),
         user: loadIcon(require('./icons/user.svg'), { color: '#999' }),
+        menu: loadIcon(require('./icons/menu.svg'), { color: '#999' }),
     },
     red: {
         close: loadIcon(require('./icons/close.svg'), { color: '#eb340a' }),
+    },
+    green: {
+        save: loadIcon(require('./icons/save.svg'), { color: '#4aaf77' }),
     },
     white: {
         spinner: loadIcon(require('./icons/spinner.svg'), { color: '#fff' }),

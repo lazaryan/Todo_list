@@ -19,6 +19,8 @@ const DashboardPage = React.lazy(() => debouncedImport(() => import('./pages/das
 import { Skeleton as MainPageSkeleton } from './pages/main'
 import { Skeleton as DashboardSkeleton } from './pages/dashboard'
 
+import './asserts/main.css'
+
 export const App = () => {
 	const dispatch = useDispatch()
 	const [loading, setLoading] = React.useState(false)
@@ -35,7 +37,7 @@ export const App = () => {
                 <Route path="" render={({ location }) =>
                     <>
 						<Header />
-						<Box width="80%">
+						<Box width="90%">
 							<Switch location={location}>
 								<Route path="/dashboard/:id">
                             		<React.Suspense fallback={<DashboardSkeleton />}>

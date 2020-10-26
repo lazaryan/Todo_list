@@ -77,7 +77,6 @@ export const Skeleton = () => (
         <Flex mr="2rem"><ColumnSkeleton tasks={3} /></Flex>
         <Flex mr="2rem"><ColumnSkeleton tasks={2} /></Flex>
         <Flex mr="2rem"><ColumnSkeleton tasks={5} /></Flex>
-        <Flex mr="2rem"><ColumnSkeleton tasks={5} /></Flex>
         <Box>
             <UISkeleton width="10rem" height="2rem" />
         </Box>

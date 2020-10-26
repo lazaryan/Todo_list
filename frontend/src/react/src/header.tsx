@@ -83,7 +83,7 @@ export const Component = () => {
                                         isProcessing={processUpdateDashboardName}
                                     >Закрыть</Button>
                                 </Flex>
-                                : <Text onClick={() => setInitialUpdateDashboardName(true)} styles={theme.text.styles.box} sx={{ maxWidth: '20rem' }}>{ dashboardState.dashboard.name || 'Введите имя...' }</Text>
+                                : <Text className="overflow-text" onClick={() => setInitialUpdateDashboardName(true)} styles={theme.text.styles.box} sx={{ maxWidth: '20rem' }}>{ dashboardState.dashboard.name || 'Введите имя...' }</Text>
                         : <UISkeleton width="15rem" height="2rem" mr="1rem"/>}
                     </>
                     : null}

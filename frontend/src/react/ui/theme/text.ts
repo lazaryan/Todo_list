@@ -83,7 +83,7 @@ export const styles: Text = {
         border-radius: 3px;
         font-size: 1.2rem;
         line-height: 2.2rem;
-        padding: .5em;
+        padding: .2em;
         width: 100%;
         margin: 0;
     `

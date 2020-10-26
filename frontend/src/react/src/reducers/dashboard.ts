@@ -4,8 +4,10 @@ import {
   GET_DASHBOARD,
   UPDATE_DASHBOARD_NAME,
   GET_COLUMNS,
-  CREATE_COLUMN
+  CREATE_COLUMN,
+  UPDATE_COLUMN_NAME
 } from '../actions/dashboard/types'
+import _findIndex from 'lodash/findIndex'
 
 import { Dashboard } from './main'
 
@@ -38,6 +40,7 @@ export const reducers: Reducer<Store> = {
   [UPDATE_DASHBOARD_NAME]: (payload: any, state: Store, requestPayload: { name: string }) => ({ dashboard: { name: { $set: requestPayload.name } } }),
   [GET_COLUMNS]: (payload: Column[]) => ({ columns: { $set: payload } }),
   [CREATE_COLUMN]: (payload: Column, state: Store) => ({ columns: { $push: [payload] } }),
+  [UPDATE_COLUMN_NAME]: (payload: any, state: Store, requestPayload: { name: string, id: string }) => ({ columns: { [_findIndex(state.columns, (item: Column) => item.entity_id == requestPayload.id)]: { name: { $set: requestPayload.name } } } }),
 }
 
 export default (state = initialState, action) =>
