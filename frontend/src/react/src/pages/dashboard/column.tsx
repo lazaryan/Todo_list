@@ -45,10 +45,12 @@ export const Component = (props: Props) => {
     }
 
     const handleDeleteColumn = () => {
-        setProcessDeleteColumn(true)
-        dispatch(deleteColumn({ id: props.column.entity_id }))
-            .then(console.log)
-            .catch(console.error)
+        confirm('Вы уверены?') && (
+            setProcessDeleteColumn(true),
+            dispatch(deleteColumn({ id: props.column.entity_id }))
+                .then(console.log)
+                .catch(console.error)
+        )
     }
 
     return (
@@ -78,13 +80,28 @@ export const Component = (props: Props) => {
                 }
             </Container.Header>
             <Container.Content>
-                <TaskSkeleton />
-                <TaskSkeleton />
-                <TaskSkeleton />
+                {/*<TasksSkeleton />*/}
+                <Task />
+                <Task />
+                <Task />
+                <Flex justifyContent="center">
+                    <Button>Создать задачу</Button>
+                </Flex>
             </Container.Content>
         </Container>
     )
 }
+
+export const TasksSkeleton = () => (
+    <>
+        <TaskSkeleton />
+        <TaskSkeleton />
+        <TaskSkeleton />
+        <Flex justifyContent="center">
+            <UISkeleton width="60%" height="3rem" />
+        </Flex>
+    </>
+)
 
 export const Skeleton = (props) => (
     <Container sx={{ width: '25rem' }}>

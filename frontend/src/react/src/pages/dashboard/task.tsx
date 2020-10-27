@@ -1,11 +1,17 @@
 import React from 'react'
 
 import { Flex } from 'reflexbox'
-import { Skeleton as UISkeleton } from 'ui'
+import { Container, Skeleton as UISkeleton } from 'ui'
 
 export const Component = () => {
     return (
-        <Flex>task</Flex>
+        <Flex mb="1rem">
+            <Container sx={{ width: '100%' }}>
+                <Container.Tile>
+                    Task
+                </Container.Tile>
+            </Container>
+        </Flex>
     )
 }
 

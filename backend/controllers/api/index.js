@@ -4,8 +4,9 @@ const register = require('./register')
 const user = require('./user')
 const dashboard = require('./dashboard')
 const column = require('./column')
+const task = require('./task')
 
-;[login, logout, register, user, dashboard, column].forEach(fn =>
+;[login, logout, register, user, dashboard, column, task].forEach(fn =>
     module.exports[fn.name] = fn    
 )
 
@@ -79,5 +80,15 @@ module.exports = [
         path: '/api/dashboard/:id/columns/:column',
         method: 'delete',
         action: column.deleteColumn
+    },
+    {
+        path: '/api/dashboard/:id/columns/:column/tasks',
+        method: 'get',
+        action: task.getTasks
+    },
+    {
+        path: '/api/dashboard/:id/columns/:column/tasks',
+        method: 'post',
+        action: task.createTask
     },
 ]
