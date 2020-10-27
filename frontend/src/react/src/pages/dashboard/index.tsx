@@ -8,7 +8,7 @@ import { Button, Skeleton as UISkeleton } from 'ui'
 import { Store as DashboardStore } from '../../reducers/dashboard'
 
 import { getDashboard, getColumns, createColumn } from '../../actions/dashboard'
-import { SET_DASHBOARD } from '../../actions/dashboard/types'
+import { SET_DASHBOARD, SET_TASKS, SET_COLUMNS } from '../../actions/dashboard/types'
 
 import Column, { Skeleton as ColumnSkeleton } from './column'
 
@@ -32,7 +32,11 @@ export const Component = () => {
                 })
         }
 
-        return () => dispatch({ type: SET_DASHBOARD, payload: undefined })
+        return () => (
+            dispatch({ type: SET_DASHBOARD, payload: undefined }),
+            dispatch({ type: SET_TASKS, payload: [] }),
+            dispatch({ type: SET_COLUMNS, payload: [] })
+        )
     }, [])
 
     const handleCreateColumn = () => {

@@ -5,7 +5,9 @@ import {
     GET_COLUMNS,
     CREATE_COLUMN,
     UPDATE_COLUMN_NAME,
-    DELETE_COLUMN
+    DELETE_COLUMN,
+    GET_TASKS,
+    CREATE_TASK
 } from './types'
 
 export const getDashboard = (dashboardId: string, actionType = GET_DASHBOARD) =>
@@ -25,3 +27,9 @@ export const updateColumnName = (payload: { id: string, name: string }, actionTy
 
 export const deleteColumn = (payload: { id: string }, actionType = DELETE_COLUMN) =>
     (dispatch: DispatchFn, getState: getStateFn) => new API().delete({ url: `/api/dashboard/${getState().dashboard.dashboard.dashboard_id}/columns/${payload.id}`, payload, actionType, dispatch })
+
+export const getTasks = (payload: { id: string }, actionType = GET_TASKS) =>
+    (dispatch: DispatchFn, getState: getStateFn) => new API().read({ url: `/api/dashboard/${getState().dashboard.dashboard.dashboard_id}/columns/${payload.id}/tasks`, payload, actionType, dispatch })
+
+export const createTask = (payload: { id: string }, actionType = CREATE_TASK) =>
+    (dispatch: DispatchFn, getState: getStateFn) => new API().create({ url: `/api/dashboard/${getState().dashboard.dashboard.dashboard_id}/columns/${payload.id}/tasks`, payload, actionType, dispatch })

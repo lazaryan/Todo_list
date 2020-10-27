@@ -7,7 +7,8 @@ const TaskSchema = mongoose.Schema({
     },
     dashboard_id: String,
     column_id: String,
-    name: String
+    name: String,
+    status: Boolean
 })
 
 module.exports = mongoose.model('Task', TaskSchema)
