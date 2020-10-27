@@ -7,7 +7,7 @@ import Task, { Skeleton as TaskSkeleton } from './task'
 
 import { Column } from '../../reducers/dashboard'
 
-import { updateColumnName } from '../../actions/dashboard'
+import { updateColumnName, deleteColumn } from '../../actions/dashboard'
 
 import theme from 'theme'
 
@@ -23,6 +23,7 @@ export const Component = (props: Props) => {
     const [headerState, setHeaderState]: [HeaderState, Function] = React.useState('initial')
     const [queryDashboardName, setQueryDashboardName]: [string, Function] = React.useState(props.column.name || '')
     const [processUpdateName, setProcessUpdateName]: [boolean, Function] = React.useState(false)
+    const [processDeleteColumn, setProcessDeleteColumn]: [boolean, Function] = React.useState(false)
 
     React.useEffect(() => {
         setQueryDashboardName(props.column.name || '')
@@ -43,6 +44,13 @@ export const Component = (props: Props) => {
         setHeaderState('initial')
     }
 
+    const handleDeleteColumn = () => {
+        setProcessDeleteColumn(true)
+        dispatch(deleteColumn({ id: props.column.entity_id }))
+            .then(console.log)
+            .catch(console.error)
+    }
+
     return (
         <Container sx={{ width: '25rem' }}>
             <Container.Header sx={{ justifyContent: 'space-between' }}>
@@ -53,7 +61,7 @@ export const Component = (props: Props) => {
                             <Icon background={theme.mixin.icons.light.menu}/>
                         }>
                             <Dropdown.Button onClick={() => setHeaderState('editName')}>Изменить имя</Dropdown.Button>
-                            <Dropdown.Button>Удалить</Dropdown.Button>
+                            <Dropdown.Button disabled={processDeleteColumn} onClick={handleDeleteColumn}>Удалить</Dropdown.Button>
                         </Dropdown>
                     </>
                     : null

@@ -5,7 +5,8 @@ import {
   UPDATE_DASHBOARD_NAME,
   GET_COLUMNS,
   CREATE_COLUMN,
-  UPDATE_COLUMN_NAME
+  UPDATE_COLUMN_NAME,
+  DELETE_COLUMN
 } from '../actions/dashboard/types'
 import _findIndex from 'lodash/findIndex'
 
@@ -41,6 +42,7 @@ export const reducers: Reducer<Store> = {
   [GET_COLUMNS]: (payload: Column[]) => ({ columns: { $set: payload } }),
   [CREATE_COLUMN]: (payload: Column, state: Store) => ({ columns: { $push: [payload] } }),
   [UPDATE_COLUMN_NAME]: (payload: any, state: Store, requestPayload: { name: string, id: string }) => ({ columns: { [_findIndex(state.columns, (item: Column) => item.entity_id == requestPayload.id)]: { name: { $set: requestPayload.name } } } }),
+  [DELETE_COLUMN]: (payload: any, state: Store) => ({ columns: { $set: state.columns.filter((item: Column) => item.entity_id !== payload) } }),
 }
 
 export default (state = initialState, action) =>

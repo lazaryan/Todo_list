@@ -4,7 +4,8 @@ import {
     UPDATE_DASHBOARD_NAME,
     GET_COLUMNS,
     CREATE_COLUMN,
-    UPDATE_COLUMN_NAME
+    UPDATE_COLUMN_NAME,
+    DELETE_COLUMN
 } from './types'
 
 export const getDashboard = (dashboardId: string, actionType = GET_DASHBOARD) =>
@@ -21,3 +22,6 @@ export const createColumn = (actionType = CREATE_COLUMN) =>
 
 export const updateColumnName = (payload: { id: string, name: string }, actionType = UPDATE_COLUMN_NAME) =>
     (dispatch: DispatchFn, getState: getStateFn) => new API().update({ url: `/api/dashboard/${getState().dashboard.dashboard.dashboard_id}/columns/${payload.id}/update/name`, payload, actionType, dispatch })
+
+export const deleteColumn = (payload: { id: string }, actionType = DELETE_COLUMN) =>
+    (dispatch: DispatchFn, getState: getStateFn) => new API().delete({ url: `/api/dashboard/${getState().dashboard.dashboard.dashboard_id}/columns/${payload.id}`, payload, actionType, dispatch })

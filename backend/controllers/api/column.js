@@ -66,3 +66,19 @@ module.exports.updateColumnShow = async ({ req, res }) => {
         res.send('Ok')
     }
 }
+
+module.exports.deleteColumn = ({ req, res }) => {
+    const isAuthenticated = req.isAuthenticated()
+
+    if (!isAuthenticated) {
+        res.send('')
+    } else {
+        Column.deleteOne({ dashboard_id: req.params.id, entity_id: req.params.column }, (err) => {
+            if (err) {
+                return res.send('')
+            } else {
+                return res.send(req.params.column)
+            }
+        })
+    }
+}

@@ -75,4 +75,9 @@ module.exports = [
         method: 'put',
         action: column.updateColumnShow
     },
+    {
+        path: '/api/dashboard/:id/columns/:column',
+        method: 'delete',
+        action: column.deleteColumn
+    },
 ]
