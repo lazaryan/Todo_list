@@ -1,2 +1,4 @@
-node_modules/
-package-lock.json
+configs/server.js
+configs/database.js
+
+build
